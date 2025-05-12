@@ -13,7 +13,7 @@ const app = new Hono()
         const {id} = c.req.param();
         const event = await db.select().from(eventsTable).where(eq(eventsTable.eventId, Number(id)));
         if (event.length == 0) {
-            return c.notFound();
+            return c.json({msg: "Not found"}, 404);
         }
         return c.json({event: event[0]});
     })
@@ -21,7 +21,7 @@ const app = new Hono()
         const {id} = c.req.param();
         const deletedEvent = await db.delete(eventsTable).where(eq(eventsTable.eventId, Number(id))).returning().then(res => res[0]);
         if (!deletedEvent) {
-            return c.notFound();
+            return c.json({msg: "Not found"}, 404);
         }
         return c.json({msg: "Successfully deleted event!", deletedEvent: deletedEvent}, 200);
     })
