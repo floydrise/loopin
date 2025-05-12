@@ -6,7 +6,7 @@ export default function Header() {
     return (
         <header className="p-2 border gap-2">
             <nav className="flex flex-row justify-start items-center gap-4">
-                <Button variant={"default"}>
+                <Button variant={"default"} asChild>
                     <Link to="/">Home</Link>
                 </Button>
                 <div>
