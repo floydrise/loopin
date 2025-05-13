@@ -3,22 +3,35 @@ import { useQuery } from "@tanstack/react-query";
 import { getEventsQueryOptions } from "@/lib/api.ts";
 import ExperienceCard from "@/components/ExperienceCard.tsx";
 import type { eventSelectType } from "../../../server/types.ts";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 export const Route = createFileRoute("/experiences")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { isPending, isError, data, error } = useQuery(getEventsQueryOptions);
-  if (isPending) return <p>Loading ...</p>;
+  const { isLoading, isError, data, error } = useQuery(getEventsQueryOptions);
   if (isError) return <p>{error.message}</p>;
-  const events = data.events;
+  const events = data?.events;
 
   return (
-    <div className={"grid grid-cols-1 md:grid-cols-3 justify-items-center"}>
-      {events.map((event) => (
-        <ExperienceCard key={event.eventId} event={event as eventSelectType} />
-      ))}
+    <div
+      className={
+        "grid grid-cols-1 md:grid-cols-3 gap-y-8 mb-10 justify-items-center"
+      }
+    >
+      {isLoading
+        ? new Array(6)
+            .fill(null)
+            .map((_, index) => (
+              <Skeleton key={index} className={"w-100 h-100"} />
+            ))
+        : events?.map((event) => (
+            <ExperienceCard
+              key={event.eventId}
+              event={event as eventSelectType}
+            />
+          ))}
     </div>
   );
 }

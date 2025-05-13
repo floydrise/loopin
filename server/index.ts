@@ -23,6 +23,6 @@ const app = new Hono()
   .get("/", (c) => {
     return c.json({ msg: "Howdy 🤠!" }, 200);
   })
-  .route("/events", eventsRoute);
+  .route("/experiences", eventsRoute);
 export type AppType = typeof app;
 export default app;
