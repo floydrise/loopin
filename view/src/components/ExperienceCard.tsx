@@ -30,12 +30,26 @@ import { Brush, Calendar, Clock, MapPin, Trash } from "lucide-react";
 import { useSession } from "@/lib/auth_client.ts";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteEvent } from "@/lib/api.ts";
+import { toast } from "sonner";
 
 const ExperienceCard = ({ event }: { event: eventSelectType }) => {
+  const queryClient = useQueryClient();
   const { data } = useSession();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const isTooLong = event.eventDescription!.length > 100;
+  const mutation = useMutation({
+    mutationFn: (id: number) => deleteEvent(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetch_events"] });
+      toast.success("Successfully deleted event!");
+    },
+    onError: (error) => {
+      toast.error("An error occurred: " + error);
+    },
+  });
   return (
     <Card className="w-full max-w-md overflow-hidden pt-0 scale-95 transform transition duration-500 hover:scale-100">
       <div className="relative h-48 pt-0 w-full overflow-hidden">
@@ -116,7 +130,13 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
+                    <AlertDialogAction
+                      onClick={() => {
+                        mutation.mutate(event.eventId);
+                      }}
+                    >
+                      Continue
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
