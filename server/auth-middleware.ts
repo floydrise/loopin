@@ -5,7 +5,7 @@ export const authMiddleware = createMiddleware<{
   Variables: {
     user: typeof auth.$Infer.Session.user | null;
     session: typeof auth.$Infer.Session.session | null;
-  };
+  },
 }>(async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 

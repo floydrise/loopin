@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { signOut, useSession } from "@/lib/auth_client.ts";
+import { MapPinned } from "lucide-react";
 
 export default function Header() {
   const { pathname } = useLocation();
@@ -11,16 +12,17 @@ export default function Header() {
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
-          <img
-            src={"/LoopIn_logo.png"}
-            alt={"Logo of our company"}
-            className={"w-24 md:w-32"}
-          />
+          <MapPinned size={56}/>
         </Link>
         <div className={"flex gap-4 justify-center items-center"}>
+          {data?.user.role == "staff" ? (
+            <Button className={"bg-violet-300 hover:bg-violet-300 hidden md:block"} asChild>
+              <Link to="/create">Create</Link>
+            </Button>
+          ) : null}
           <Button
             variant={pathname == "/" ? "default" : "ghost"}
-            className={"hidden"}
+            className={"hidden md:block"}
             asChild
           >
             <Link to="/">Home</Link>

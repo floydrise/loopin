@@ -12,11 +12,21 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { eventSelectType } from "../../../server/types.ts";
 import { Button } from "@/components/ui/button.tsx";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { Brush, Calendar, Clock, MapPin, Trash } from "lucide-react";
 import { useSession } from "@/lib/auth_client.ts";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
@@ -27,7 +37,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isTooLong = event.eventDescription!.length > 100;
   return (
-    <Card className="w-full max-w-md overflow-hidden scale-95 transform transition duration-500 pt-0 hover:scale-100">
+    <Card className="w-full max-w-md overflow-hidden pt-0 scale-95 transform transition duration-500 hover:scale-100">
       <div className="relative h-48 pt-0 w-full overflow-hidden">
         <img
           src={event.eventImg!}
@@ -45,7 +55,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
             <Calendar />
             <p>{event.eventDateStart.split("-").reverse().join("-")}</p>
           </span>
-          <span className={"flex items-center"}>
+          <span className={"flex items-center gap-1"}>
             <Clock />
             <p>{event.eventTimeStart.split(":").slice(0, 2).join(":")}</p>
           </span>
@@ -58,13 +68,24 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
             if (isTooLong) setIsOpen(true);
           }}
         >
-          {event.eventDescription!.length > 100
-            ? event?.eventDescription?.slice(0, 100) + " ..."
-            : event.eventDescription}
+          {isTooLong ? (
+            <p>
+              {event?.eventDescription?.slice(0, 90) + "... "}
+              <span className={"font-bold"}>Read more</span>
+            </p>
+          ) : (
+            event.eventDescription
+          )}
         </p>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger></DialogTrigger>
           <DialogContent>
+            <div className="relative rounded-sm h-60 pt-0 w-full overflow-hidden">
+              <img
+                src={event.eventImg!}
+                alt="Card image"
+                className="h-full w-full object-cover"
+              />
+            </div>
             <DialogHeader>
               <DialogTitle>Description</DialogTitle>
               <DialogDescription>{event.eventDescription}</DialogDescription>
@@ -73,14 +94,42 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
         </Dialog>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <p>£{event.eventPrice}</p>
+        <p className={"font-bold"}>Price: £{event.eventPrice}</p>
         <div className={"flex gap-2"}>
-          {data?.session ? <Button variant={"destructive"}>Edit</Button> : null}
+          {data?.user.role == "staff" ? (
+            <div className={"flex gap-2"}>
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button variant={"destructive"}>
+                    <Trash />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this event and remove the data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>Continue</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              <Button className={"bg-violet-300 hover:bg-violet-300"}>
+                <Brush />
+              </Button>
+            </div>
+          ) : null}
           <Button
             onClick={() => {
               if (!data?.session) navigate({ to: "/login" });
             }}
-            className={"bg-green-500 hover:bg-green-400"}
+            variant={"outline"}
           >
             Buy
           </Button>
