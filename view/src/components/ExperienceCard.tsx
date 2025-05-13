@@ -26,7 +26,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { eventSelectType } from "../../../server/types.ts";
 import { Button } from "@/components/ui/button.tsx";
-import { BadgeAlert, Brush, Calendar, Clock, MapPin, Trash } from "lucide-react";
+import {
+  BadgeAlert,
+  Brush,
+  Calendar,
+  Clock,
+  MapPin,
+  Trash,
+} from "lucide-react";
 import { useSession } from "@/lib/auth_client.ts";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
@@ -121,7 +128,8 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle className={"flex items-center gap-1 "}>
-                      <BadgeAlert className={"text-red-700"}/> Are you absolutely sure?
+                      <BadgeAlert className={"text-red-700"} /> Are you
+                      absolutely sure?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete

@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { signIn } from "@/lib/auth_client.ts";
 import { Separator } from "@/components/ui/separator.tsx";
+import { Bot, Handshake, Heart } from "lucide-react";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
@@ -23,9 +24,14 @@ function RouteComponent() {
     <section className={"m-auto px-2 max-w-sm md:max-w-md"}>
       <Card>
         <CardHeader>
-          <CardTitle className={"text-xl m-auto"}>👋🏻 Sign in</CardTitle>
-          <CardDescription className={"m-auto"}>
-            🤖 Log in using your existing accounts:
+          <CardTitle
+            className={"text-xl justify-center items-center flex gap-1"}
+          >
+            <Handshake /> Sign in
+          </CardTitle>
+          <CardDescription className={"m-auto flex gap-1 items-center"}>
+            <Bot className={"animate-spin [animation-duration:4s]"} /> Log in
+            using your existing accounts:
           </CardDescription>
         </CardHeader>
         <Separator />
@@ -58,8 +64,8 @@ function RouteComponent() {
           </Button>
         </CardContent>
         <CardFooter>
-          <p className={"italic font-light m-auto"}>
-            Thanks for using our services! ❤️
+          <p className={"italic font-light m-auto inline-flex gap-1"}>
+            Thanks for using our services! <Heart />
           </p>
         </CardFooter>
       </Card>
