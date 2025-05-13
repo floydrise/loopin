@@ -8,7 +8,11 @@ import {
   time,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
 
 // Drizzle schemas 👇🏻
 export const eventsTable = pgTable("events", {
@@ -120,3 +124,5 @@ export const eventUpdateSchema = createUpdateSchema(eventsTable, {
       .time({ message: "Must be time in format 00:00 or 00:00:00" })
       .optional(),
 });
+
+export const eventSelectSchema = createSelectSchema(eventsTable);

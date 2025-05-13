@@ -14,11 +14,15 @@ export default function Header() {
           <img
             src={"/LoopIn_logo.png"}
             alt={"Logo of our company"}
-            className={"w-24 md:w-32 animate-bounce"}
+            className={"w-24 md:w-32"}
           />
         </Link>
         <div className={"flex gap-4 justify-center items-center"}>
-          <Button variant={pathname == "/" ? "default" : "ghost"} asChild>
+          <Button
+            variant={pathname == "/" ? "default" : "ghost"}
+            className={"hidden"}
+            asChild
+          >
             <Link to="/">Home</Link>
           </Button>
           <Button
@@ -29,6 +33,7 @@ export default function Header() {
           </Button>
           {data?.session ? (
             <Button
+              variant={"outline"}
               onClick={async () =>
                 await signOut({
                   fetchOptions: {
@@ -42,10 +47,7 @@ export default function Header() {
               Log out
             </Button>
           ) : (
-            <Button
-              variant={"secondary"}
-              asChild
-            >
+            <Button variant={"secondary"} asChild>
               <Link to="/login">Login</Link>
             </Button>
           )}
