@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { signOut, useSession } from "@/lib/auth_client.ts";
@@ -6,6 +6,7 @@ import { signOut, useSession } from "@/lib/auth_client.ts";
 export default function Header() {
   const { pathname } = useLocation();
   const { data } = useSession();
+  const navigate = useNavigate();
   return (
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2">
       <nav className="flex flex-row justify-between items-center gap-4">
@@ -27,10 +28,22 @@ export default function Header() {
             <Link to="/experiences">Experiences</Link>
           </Button>
           {data?.session ? (
-            <Button onClick={async () => await signOut()}>Log out</Button>
+            <Button
+              onClick={async () =>
+                await signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      navigate({ to: "/" });
+                    },
+                  },
+                })
+              }
+            >
+              Log out
+            </Button>
           ) : (
             <Button
-              variant={pathname == "/login" ? "default" : "ghost"}
+              variant={"secondary"}
               asChild
             >
               <Link to="/login">Login</Link>

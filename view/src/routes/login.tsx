@@ -40,7 +40,7 @@ function RouteComponent() {
             setIsLoading(true);
             await signIn.social({
               provider: "google",
-              callbackURL: "/",
+              callbackURL: "http://localhost:5173/",
             });
           }}
         >
