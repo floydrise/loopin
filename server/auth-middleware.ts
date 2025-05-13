@@ -1,6 +1,4 @@
-import { Hono } from "hono";
 import { auth } from "../auth";
-import { cors } from "hono/cors";
 import { createMiddleware } from "hono/factory";
 
 export const authMiddleware = createMiddleware<{

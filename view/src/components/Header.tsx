@@ -1,10 +1,11 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { signOut, useSession } from "@/lib/auth_client.ts";
 
 export default function Header() {
   const { pathname } = useLocation();
-  console.log(location);
+  const { data } = useSession();
   return (
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2">
       <nav className="flex flex-row justify-between items-center gap-4">
@@ -25,6 +26,16 @@ export default function Header() {
           >
             <Link to="/experiences">Experiences</Link>
           </Button>
+          {data?.session ? (
+            <Button onClick={async () => await signOut()}>Log out</Button>
+          ) : (
+            <Button
+              variant={pathname == "/login" ? "default" : "ghost"}
+              asChild
+            >
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
           <div>
             <ModeToggle />
           </div>
