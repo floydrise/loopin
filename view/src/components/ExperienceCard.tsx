@@ -165,7 +165,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
         </Dialog>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <p className={"font-bold"}>Price: £{event.eventPrice}</p>
+        <p className={"font-bold inline-flex"}>£{event.eventPrice}</p>
         <div className={"flex gap-2"}>
           {data?.user.role == "staff" ? (
             <div className={"flex gap-2"}>
