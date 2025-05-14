@@ -42,7 +42,7 @@ const expDefVal: eventInsertType = {
   eventTimeStart: "",
 };
 
-function FieldInfo({ field }: { field: AnyFieldApi }) {
+export function FieldInfo({ field }: { field: AnyFieldApi }) {
   return (
     <>
       {field.state.meta.isTouched && !field.state.meta.isValid ? (
