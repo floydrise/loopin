@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   Card,
   CardContent,
@@ -24,6 +24,9 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { type AnyFieldApi, useForm } from "@tanstack/react-form";
 import type { eventInsertType } from "../../../server/types.ts";
 import { eventsPostSchema } from "../../../server/db/schema.ts";
+import { postEvent } from "@/lib/api.ts";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
@@ -32,7 +35,7 @@ export const Route = createFileRoute("/create")({
 const expDefVal: eventInsertType = {
   eventName: "",
   eventDescription: "",
-  eventImg: null,
+  eventImg: undefined,
   eventPrice: 0,
   eventLocation: "",
   eventDateStart: "",
@@ -53,10 +56,15 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
 }
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const form = useForm({
     defaultValues: expDefVal,
     onSubmit: async ({ value }) => {
-      console.log(value);
+      await postEvent(value);
+      await queryClient.invalidateQueries({ queryKey: ["fetch_events"] });
+      toast.success("Successfully created new experience");
+      await navigate({ to: "/experiences" });
     },
   });
   return (

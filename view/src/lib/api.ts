@@ -1,6 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 import type { AppType } from "../../../server";
 import { hc } from "hono/client";
+import type { eventInsertType } from "../../../server/types.ts";
+import { toast } from "sonner";
 
 const api = hc<AppType>("/").api;
 
@@ -22,5 +24,17 @@ export const deleteEvent = async (id: number) => {
     },
   });
   if (!res.ok) throw new Error("An error occurred while deleting the event");
+  return await res.json();
+};
+
+export const postEvent = async (event: eventInsertType) => {
+  if (event.eventImg?.trim() === "") delete event.eventImg;
+  const res = await api.experiences.$post({
+    json: event,
+  });
+  if (!res.ok) {
+    toast.error("An error occurred while creating the event");
+    throw new Error("An error occurred while creating the event");
+  }
   return await res.json();
 };
