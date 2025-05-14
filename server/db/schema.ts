@@ -89,9 +89,10 @@ export const verification = pgTable("verification", {
 export const eventsPostSchema = createInsertSchema(eventsTable, {
   eventName: (schema) =>
     schema
-      .min(3, "Event name must be at least 3 chars long!")
+      .min(3, "Event name must be at least 3 chars long")
       .max(100, "Event name can't be longer than 100 characters"),
-  eventPrice: (schema) => schema.nonnegative(),
+  eventPrice: (schema) =>
+    schema.nonnegative("Input must be non-negative number"),
   eventLocation: (schema) =>
     schema
       .min(3, "Location must be at least 3 chars long")
@@ -106,7 +107,7 @@ export const eventsPostSchema = createInsertSchema(eventsTable, {
 export const eventUpdateSchema = createUpdateSchema(eventsTable, {
   eventName: (schema) =>
     schema
-      .min(3, "Event name must be at least 3 chars long!")
+      .min(3, "Event name must be at least 3 chars long")
       .max(100, "Event name can't be longer than 100 characters")
       .optional(),
   eventPrice: (schema) => schema.nonnegative().optional(),
