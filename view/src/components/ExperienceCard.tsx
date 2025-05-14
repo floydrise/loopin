@@ -90,10 +90,10 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
           }}
         >
           {isTooLong ? (
-            <p>
+            <span>
               {event?.eventDescription?.slice(0, 90) + "... "}
               <span className={"font-bold"}>Read more</span>
-            </p>
+            </span>
           ) : (
             event.eventDescription
           )}
@@ -120,7 +120,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
           {data?.user.role == "staff" ? (
             <div className={"flex gap-2"}>
               <AlertDialog>
-                <AlertDialogTrigger>
+                <AlertDialogTrigger asChild>
                   <Button variant={"destructive"}>
                     <Trash />
                   </Button>

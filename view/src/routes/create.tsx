@@ -33,7 +33,7 @@ function RouteComponent() {
       <Card className="max-w-md m-auto">
         <CardHeader>
           <CardTitle className={"flex items-center gap-2"}>
-            <Pen /> Create New Experience
+            <Pen /> Create a new experience
           </CardTitle>
           <CardDescription className={"flex items-center gap-2"}>
             Fill the form below <Pointer size={18} className={"rotate-180"} />

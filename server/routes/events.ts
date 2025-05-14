@@ -22,7 +22,10 @@ const app = new Hono()
     }
     return c.json({ event: event[0] });
   })
-  .delete("/:id{[0-9]+}", async (c) => {
+  .delete("/:id{[0-9]+}", authMiddleware, async (c) => {
+    const user = c.get("user");
+    if (!user || user.role != "staff")
+      return c.json({ msg: "Not authorised to do this action!" }, 400);
     const { id } = c.req.param();
     const deletedEvent = await db
       .delete(eventsTable)
@@ -37,25 +40,41 @@ const app = new Hono()
       200,
     );
   })
-  .post("/", zValidator("json", eventsPostSchema), async (c) => {
-    const validated = c.req.valid("json");
-    const newEvent = await db
-      .insert(eventsTable)
-      .values(validated)
-      .returning()
-      .then((res) => res[0]);
-    return c.json({ newEvent }, 201);
-  })
-  .patch("/:id{[0-9]+}", zValidator("json", eventUpdateSchema), async (c) => {
-    const { id } = c.req.param();
-    const validated = c.req.valid("json");
-    const updatedEvent = await db
-      .update(eventsTable)
-      .set(validated)
-      .where(eq(eventsTable.eventId, Number(id)))
-      .returning()
-      .then((res) => res[0]);
-    return c.json({ msg: "Successfully updated event", updatedEvent }, 200);
-  });
+  .post(
+    "/",
+    zValidator("json", eventsPostSchema),
+    authMiddleware,
+    async (c) => {
+      const user = c.get("user");
+      if (!user || user.role != "staff")
+        return c.json({ msg: "Not authorised to do this action!" }, 400);
+      const validated = c.req.valid("json");
+      const newEvent = await db
+        .insert(eventsTable)
+        .values(validated)
+        .returning()
+        .then((res) => res[0]);
+      return c.json({ newEvent }, 201);
+    },
+  )
+  .patch(
+    "/:id{[0-9]+}",
+    zValidator("json", eventUpdateSchema),
+    authMiddleware,
+    async (c) => {
+      const user = c.get("user");
+      if (!user || user.role != "staff")
+        return c.json({ msg: "Not authorised to do this action!" }, 400);
+      const { id } = c.req.param();
+      const validated = c.req.valid("json");
+      const updatedEvent = await db
+        .update(eventsTable)
+        .set(validated)
+        .where(eq(eventsTable.eventId, Number(id)))
+        .returning()
+        .then((res) => res[0]);
+      return c.json({ msg: "Successfully updated event", updatedEvent }, 200);
+    },
+  );
 
 export default app;
