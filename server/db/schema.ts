@@ -90,13 +90,13 @@ export const eventsPostSchema = createInsertSchema(eventsTable, {
   eventName: (schema) =>
     schema
       .min(3, "Event name must be at least 3 chars long")
-      .max(100, "Event name can't be longer than 100 characters"),
+      .max(30, "Event name can't be longer than 30 characters"),
   eventPrice: (schema) =>
     schema.nonnegative("Input must be non-negative number"),
   eventLocation: (schema) =>
     schema
       .min(3, "Location must be at least 3 chars long")
-      .max(100, "Location can't be more than 100 chars long"),
+      .max(20, "Location can't be more than 20 chars long"),
   eventImg: (schema) => schema.url("Must be a valid URL").optional(),
   eventDescription: (schema) => schema.optional(),
   eventDateStart: (schema) => schema.date("Must be a date in YY-MM-DD format"),
@@ -108,13 +108,13 @@ export const eventUpdateSchema = createUpdateSchema(eventsTable, {
   eventName: (schema) =>
     schema
       .min(3, "Event name must be at least 3 chars long")
-      .max(100, "Event name can't be longer than 100 characters")
+      .max(30, "Event name can't be longer than 30 characters")
       .optional(),
   eventPrice: (schema) => schema.nonnegative().optional(),
   eventLocation: (schema) =>
     schema
       .min(3, "Location must be at least 3 chars long")
-      .max(100, "Location can't be more than 100 chars long")
+      .max(20, "Location can't be more than 20 chars long")
       .optional(),
   eventImg: (schema) => schema.url("Must be a valid URL").optional(),
   eventDescription: (schema) => schema.optional(),
