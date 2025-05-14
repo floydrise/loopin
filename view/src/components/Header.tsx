@@ -2,44 +2,56 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useSession } from "@/lib/auth_client.ts";
-import { House, MapPinned, Telescope } from "lucide-react";
+import { Brush, House, Telescope } from "lucide-react";
 import { ProfileDropdown } from "@/components/ProfileDropdown.tsx";
+import { MenuDropdown } from "@/components/MenuDropdown.tsx";
+import { useTheme } from "@/components/theme-provider.tsx";
 
 export default function Header() {
   const { pathname } = useLocation();
   const { data } = useSession();
+  const { theme } = useTheme();
   return (
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
-          <MapPinned size={56} />
+          {theme == "dark" ? (
+            <img src={"LoopinWhite.png"} alt={"App logo"} className={"w-32"} />
+          ) : (
+            <img src={"LoopinBlack.png"} alt={"App logo"} className={"w-32"} />
+          )}
         </Link>
         <div className={"flex gap-4 justify-center items-center"}>
-          {data?.user.role == "staff" ? (
+          <div className={"md:flex gap-2 hidden items-center justify-center"}>
+            {data?.user.role == "staff" ? (
+              <Button
+                className={"bg-violet-300 hover:bg-violet-300 hidden md:flex"}
+                asChild
+              >
+                <Link to="/create">
+                  <Brush /> Create
+                </Link>
+              </Button>
+            ) : null}
             <Button
-              className={"bg-violet-300 hover:bg-violet-300 hidden md:block"}
+              variant={pathname == "/" ? "default" : "ghost"}
+              className={"hidden md:flex"}
               asChild
             >
-              <Link to="/create">Create</Link>
+              <Link to="/">
+                <House /> Home
+              </Link>
             </Button>
-          ) : null}
-          <Button
-            variant={pathname == "/" ? "default" : "ghost"}
-            className={"hidden md:flex"}
-            asChild
-          >
-            <Link to="/">
-              <House /> Home
-            </Link>
-          </Button>
-          <Button
-            variant={pathname == "/experiences" ? "default" : "ghost"}
-            asChild
-          >
-            <Link to="/experiences">
-              <Telescope /> Experiences
-            </Link>
-          </Button>
+            <Button
+              variant={pathname == "/experiences" ? "default" : "ghost"}
+              asChild
+            >
+              <Link to="/experiences">
+                <Telescope /> Experiences
+              </Link>
+            </Button>
+          </div>
+          <MenuDropdown />
           {data?.user ? (
             <ProfileDropdown user={data.user} />
           ) : (

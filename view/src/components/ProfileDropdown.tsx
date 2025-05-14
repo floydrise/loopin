@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/avatar.tsx";
 import { LogOut, User } from "lucide-react";
 import { signOut } from "@/lib/auth_client.ts";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 export function ProfileDropdown({
   user,
