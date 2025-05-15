@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import eventsRoute from "./routes/events";
+import subscriptionsRoute from "./routes/subscriptions";
 import { auth } from "../auth";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
@@ -23,6 +24,8 @@ const app = new Hono()
   .get("/", (c) => {
     return c.json({ msg: "Howdy 🤠!" }, 200);
   })
-  .route("/experiences", eventsRoute);
+  .route("/experiences", eventsRoute)
+  .route("/subscriptions", subscriptionsRoute);
+
 export type AppType = typeof app;
 export default app;

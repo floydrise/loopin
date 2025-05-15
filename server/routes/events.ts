@@ -10,7 +10,6 @@ const app = new Hono()
     const events = await db.select().from(eventsTable);
     return c.json({ events });
   })
-
   .get("/:id{[0-9]+}", async (c) => {
     const { id } = c.req.param();
     const event = await db

@@ -137,3 +137,6 @@ export const eventUpdateSchema = createUpdateSchema(eventsTable, {
 });
 
 export const eventSelectSchema = createSelectSchema(eventsTable);
+
+export const eventUserSelectSchema = createSelectSchema(eventUserTable);
+export const eventUserPostSchema = createInsertSchema(eventUserTable);

@@ -5,13 +5,11 @@ import { useSession } from "@/lib/auth_client.ts";
 import { Brush, House, Telescope } from "lucide-react";
 import { ProfileDropdown } from "@/components/ProfileDropdown.tsx";
 import { MenuDropdown } from "@/components/MenuDropdown.tsx";
-import { useTheme } from "@/components/theme-provider.tsx";
-import logo from "../../public/loopin_purple.png";
+import logo from "/loopin_purple.png?url";
 
 export default function Header() {
   const { pathname } = useLocation();
   const { data } = useSession();
-  const { theme } = useTheme();
   return (
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2 border-b-1">
       <nav className="flex flex-row justify-between items-center gap-4">
