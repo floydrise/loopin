@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button.tsx";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 export const Route = createFileRoute("/experiences/$experienceId")({
   loader: ({ params: { experienceId } }) => {
@@ -23,7 +24,26 @@ function RouteComponent() {
   const { isLoading, isError, data, error } = useQuery(
     getEventByIdQueryOptions(experienceId),
   );
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <section className={"flex justify-center items-center flex-col gap-2"}>
+        <div className={"max-w-2xl px-2"}>
+          <Skeleton className={"w-80 h-80 sm:w-140 sm:h-100"} />
+        </div>
+        <section className={"flex gap-4"}>
+          {new Array(4).fill(0).map((_, index) => (
+            <Skeleton key={index} className={"w-16 sm:w-20 h-4"} />
+          ))}
+        </section>
+        <Skeleton className={"w-36 h-5"} />
+        <article className={"sm:max-w-xl flex gap-2 flex-wrap"}>
+          {new Array(58).fill(null).map((_, index) => (
+            <Skeleton key={index} className={"w-3 h-3 rounded-full"} />
+          ))}
+        </article>
+        <Skeleton className={"w-44 h-8"} />
+      </section>
+    );
   if (isError) return <p>Error: {error.message}</p>;
   const event = data?.event;
   return (
