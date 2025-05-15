@@ -13,9 +13,10 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as LoginImport } from './routes/login'
-import { Route as ExperiencesImport } from './routes/experiences'
 import { Route as CreateImport } from './routes/create'
 import { Route as IndexImport } from './routes/index'
+import { Route as ExperiencesIndexImport } from './routes/experiences.index'
+import { Route as ExperiencesExperienceIdImport } from './routes/experiences/$experienceId'
 
 // Create/Update Routes
 
@@ -31,12 +32,6 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ExperiencesRoute = ExperiencesImport.update({
-  id: '/experiences',
-  path: '/experiences',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const CreateRoute = CreateImport.update({
   id: '/create',
   path: '/create',
@@ -46,6 +41,18 @@ const CreateRoute = CreateImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ExperiencesIndexRoute = ExperiencesIndexImport.update({
+  id: '/experiences/',
+  path: '/experiences/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ExperiencesExperienceIdRoute = ExperiencesExperienceIdImport.update({
+  id: '/experiences/$experienceId',
+  path: '/experiences/$experienceId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,13 +74,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateImport
       parentRoute: typeof rootRoute
     }
-    '/experiences': {
-      id: '/experiences'
-      path: '/experiences'
-      fullPath: '/experiences'
-      preLoaderRoute: typeof ExperiencesImport
-      parentRoute: typeof rootRoute
-    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -88,6 +88,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/experiences/$experienceId': {
+      id: '/experiences/$experienceId'
+      path: '/experiences/$experienceId'
+      fullPath: '/experiences/$experienceId'
+      preLoaderRoute: typeof ExperiencesExperienceIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/experiences/': {
+      id: '/experiences/'
+      path: '/experiences'
+      fullPath: '/experiences'
+      preLoaderRoute: typeof ExperiencesIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -96,51 +110,75 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
-  '/experiences': typeof ExperiencesRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
+  '/experiences': typeof ExperiencesIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
-  '/experiences': typeof ExperiencesRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
+  '/experiences': typeof ExperiencesIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
-  '/experiences': typeof ExperiencesRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
+  '/experiences/': typeof ExperiencesIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/create' | '/experiences' | '/login' | '/profile'
+  fullPaths:
+    | '/'
+    | '/create'
+    | '/login'
+    | '/profile'
+    | '/experiences/$experienceId'
+    | '/experiences'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create' | '/experiences' | '/login' | '/profile'
-  id: '__root__' | '/' | '/create' | '/experiences' | '/login' | '/profile'
+  to:
+    | '/'
+    | '/create'
+    | '/login'
+    | '/profile'
+    | '/experiences/$experienceId'
+    | '/experiences'
+  id:
+    | '__root__'
+    | '/'
+    | '/create'
+    | '/login'
+    | '/profile'
+    | '/experiences/$experienceId'
+    | '/experiences/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
-  ExperiencesRoute: typeof ExperiencesRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
+  ExperiencesExperienceIdRoute: typeof ExperiencesExperienceIdRoute
+  ExperiencesIndexRoute: typeof ExperiencesIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
-  ExperiencesRoute: ExperiencesRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
+  ExperiencesExperienceIdRoute: ExperiencesExperienceIdRoute,
+  ExperiencesIndexRoute: ExperiencesIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -155,9 +193,10 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/create",
-        "/experiences",
         "/login",
-        "/profile"
+        "/profile",
+        "/experiences/$experienceId",
+        "/experiences/"
       ]
     },
     "/": {
@@ -166,14 +205,17 @@ export const routeTree = rootRoute
     "/create": {
       "filePath": "create.tsx"
     },
-    "/experiences": {
-      "filePath": "experiences.tsx"
-    },
     "/login": {
       "filePath": "login.tsx"
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/experiences/$experienceId": {
+      "filePath": "experiences/$experienceId.tsx"
+    },
+    "/experiences/": {
+      "filePath": "experiences.index.tsx"
     }
   }
 }

@@ -45,7 +45,7 @@ import {
   Trash,
 } from "lucide-react";
 import { useSession } from "@/lib/auth_client.ts";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteEvent, patchEvent } from "@/lib/api.ts";
@@ -95,7 +95,6 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
 
   const { data } = useSession();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = useState(false);
 
   const mutation = useMutation({
@@ -137,38 +136,13 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       <CardContent className={"flex-1"}>
         <p
           className={`text-sm text-muted-foreground ${isTooLong ? "hover:cursor-pointer" : null}`}
-          onClick={() => {
-            if (isTooLong) setIsOpen(true);
-          }}
         >
           {isTooLong ? (
-            <span>
-              {event?.eventDescription?.slice(0, 90) + "... "}
-              <span className={"font-bold"}>Read more</span>
-            </span>
+            <span>{event?.eventDescription?.slice(0, 90) + "... "}</span>
           ) : (
             event.eventDescription
           )}
         </p>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent>
-            <div className="relative rounded-sm h-60 w-full overflow-hidden">
-              <img
-                src={event.eventImg!}
-                alt="Card image"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <DialogHeader>
-              <DialogTitle>Description</DialogTitle>
-              <DialogDescription>
-                <span className={"whitespace-pre-wrap break-all"}>
-                  {event.eventDescription}
-                </span>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className={"font-bold inline-flex"}>
@@ -466,6 +440,12 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
               </Dialog>
             </div>
           ) : null}
+          <Link
+            to={"/experiences/$experienceId"}
+            params={{ experienceId: String(event.eventId) }}
+          >
+            <Button>View</Button>
+          </Link>
           {event.eventPrice == 0 ? (
             <Button
               onClick={() => {

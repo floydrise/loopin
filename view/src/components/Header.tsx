@@ -11,15 +11,12 @@ export default function Header() {
   const { pathname } = useLocation();
   const { data } = useSession();
   const { theme } = useTheme();
+  console.log(theme);
   return (
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2 border-b-1">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
-          {theme == "dark" ? (
-            <img src={"LoopinWhite.png"} alt={"App logo"} className={"w-32"} />
-          ) : (
-            <img src={"LoopinBlack.png"} alt={"App logo"} className={"w-32"} />
-          )}
+          <img src={"loopin_purple.png"} alt={"App logo"} className={"w-32"} />
         </Link>
         <div className={"flex gap-4 justify-center items-center"}>
           <div className={"md:flex gap-2 hidden items-center justify-center"}>
