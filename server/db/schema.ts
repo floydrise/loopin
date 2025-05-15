@@ -3,10 +3,12 @@ import {
   date,
   integer,
   pgTable,
+  primaryKey,
   serial,
   text,
   time,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 import {
   createInsertSchema,
@@ -29,10 +31,18 @@ export const eventsTable = pgTable("events", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export const eventUserTable = pgTable("event_user", {
-  eventId: integer("event_id").notNull(),
-  userId: integer("user_id").notNull(),
-});
+export const eventUserTable = pgTable(
+  "event_user",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => eventsTable.eventId, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (t) => [unique("event_user_unique").on(t.eventId, t.userId)],
+);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
