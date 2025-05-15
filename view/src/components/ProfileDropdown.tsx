@@ -43,7 +43,7 @@ export function ProfileDropdown({
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"md:mt-2 mb-2"}>
         <DropdownMenuLabel className={"text-center text-muted-foreground"}>
-          My account
+          Account
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => navigate({ to: "/profile" })}>

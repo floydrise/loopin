@@ -1,7 +1,10 @@
 import { queryOptions } from "@tanstack/react-query";
 import type { AppType } from "../../../server";
 import { hc } from "hono/client";
-import type { eventInsertType, eventUpdateType } from "../../../server/types.ts";
+import type {
+  eventInsertType,
+  eventUpdateType,
+} from "../../../server/types.ts";
 import { toast } from "sonner";
 
 const api = hc<AppType>("/").api;
@@ -11,11 +14,17 @@ const fetchAllEvents = async () => {
   if (!res.ok) throw new Error("An error occurred while fetching the events");
   return await res.json();
 };
-export const getEventsQueryOptions = queryOptions({
-  queryKey: ["fetch_events"],
-  queryFn: fetchAllEvents,
-  staleTime: 5 * 1000,
-});
+
+const fetchEventById = async (id: string) => {
+  const res = await api.experiences[":id{[0-9]+}"].$get({
+    param: {
+      id: id,
+    },
+  });
+  if (res.status === 404) throw new Error("Not found");
+  if (!res.ok) throw new Error("An error occurred while fetching the event");
+  return await res.json();
+};
 
 export const deleteEvent = async (id: number) => {
   const res = await api.experiences[":id{[0-9]+}"].$delete({
@@ -52,4 +61,17 @@ export const patchEvent = async (id: number, event: eventUpdateType) => {
     throw new Error("An error occurred while creating the event");
   }
   return await res.json();
+};
+
+export const getEventsQueryOptions = queryOptions({
+  queryKey: ["fetch_events"],
+  queryFn: fetchAllEvents,
+  staleTime: 5 * 1000,
+});
+
+export const getEventByIdQueryOptions = (eventId: string) => {
+  return queryOptions({
+    queryKey: ["fetch_event_by_id", eventId],
+    queryFn: () => fetchEventById(eventId),
+  });
 };

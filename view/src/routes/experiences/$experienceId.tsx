@@ -1,9 +1,134 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { getEventByIdQueryOptions } from "@/lib/api.ts";
+import { CalendarIcon, Clock, MapPin, Tag } from "lucide-react";
+import { format } from "date-fns";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button.tsx";
 
 export const Route = createFileRoute("/experiences/$experienceId")({
+  loader: ({ params: { experienceId } }) => {
+    if (isNaN(Number(experienceId))) throw notFound();
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <div>Hello "/experiences/$experienceId"!</div>;
+  const { experienceId } = Route.useParams();
+  const { isLoading, isError, data, error } = useQuery(
+    getEventByIdQueryOptions(experienceId),
+  );
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
+  const event = data?.event;
+  return (
+    <section className={"flex justify-center items-center flex-col gap-2"}>
+      <div className={"max-w-2xl px-2"}>
+        <img
+          src={event?.eventImg!}
+          alt={"Image representing the event"}
+          className={"rounded-sm"}
+        />
+      </div>
+      <section className={"flex gap-4"}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span
+                className={
+                  "flex text-sm md:text-base items-center text-muted-foreground"
+                }
+              >
+                <MapPin className={"size-4 md:size-6"} />{" "}
+                <p>{event?.eventLocation}</p>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Location</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span
+                className={
+                  "flex text-sm md:text-base items-center text-muted-foreground"
+                }
+              >
+                <CalendarIcon className={"size-4 md:size-6"} />
+                <p>{format(event?.eventDateStart!, "dd/MM/yyyy")}</p>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Date</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span
+                className={
+                  "flex text-sm md:text-base items-center text-muted-foreground"
+                }
+              >
+                <Clock className={"size-4 md:size-6"} />
+                <p>{event?.eventTimeStart.split(":").slice(0, 2).join(":")}</p>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Time</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span
+                className={
+                  "flex text-sm md:text-base items-center text-muted-foreground gap-1"
+                }
+              >
+                <Tag className={"size-4 md:size-5"} />
+                <p>
+                  {event?.eventPrice == 0 ? "Free" : `£${event?.eventPrice}`}
+                </p>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Price</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </section>
+      <h1 className={"font-semibold text-2xl md:text-3xl"}>
+        {event?.eventName}
+      </h1>
+      <article className={"max-w-2xl w-fit text-center md:text-left"}>
+        {event?.eventDescription}
+      </article>
+      {event?.eventPrice == 0 ? (
+        <section className={"flex flex-col justify-center items-center gap-1"}>
+          <span className={"inline-flex gap-2"}>
+            <p className={"max-w-md font-light text-sm text-center italic"}>
+              You can register for this event for{" "}
+              <span className={"underline"}>FREE</span> 🎉! Please, click the
+              button.
+            </p>
+          </span>
+          <Button className={"w-5/6"}>Sign Up</Button>
+        </section>
+      ) : (
+        <div className={"my-6 w-72"}>
+          <Button className={"w-full"}>Purchase</Button>
+        </div>
+      )}
+    </section>
+  );
 }

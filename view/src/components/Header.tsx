@@ -6,17 +6,17 @@ import { Brush, House, Telescope } from "lucide-react";
 import { ProfileDropdown } from "@/components/ProfileDropdown.tsx";
 import { MenuDropdown } from "@/components/MenuDropdown.tsx";
 import { useTheme } from "@/components/theme-provider.tsx";
+import logo from "../../public/loopin_purple.png";
 
 export default function Header() {
   const { pathname } = useLocation();
   const { data } = useSession();
   const { theme } = useTheme();
-  console.log(theme);
   return (
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2 border-b-1">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
-          <img src={"loopin_purple.png"} alt={"App logo"} className={"w-32"} />
+          <img src={logo} alt={"App logo"} className={"w-32"} />
         </Link>
         <div className={"flex gap-4 justify-center items-center"}>
           <div className={"md:flex gap-2 hidden items-center justify-center"}>

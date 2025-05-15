@@ -136,9 +136,10 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       <CardContent className={"flex-1"}>
         <p
           className={`text-sm text-muted-foreground ${isTooLong ? "hover:cursor-pointer" : null}`}
+          onClick={() => navigate({to: "/experiences/$experienceId", params: {experienceId: String(event.eventId)}})}
         >
           {isTooLong ? (
-            <span>{event?.eventDescription?.slice(0, 90) + "... "}</span>
+            <span>{event?.eventDescription?.slice(0, 90) + "... "}<span className={"font-semibold"}>Read more</span></span>
           ) : (
             event.eventDescription
           )}
@@ -448,6 +449,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
           </Link>
           {event.eventPrice == 0 ? (
             <Button
+              variant={"outline"}
               onClick={() => {
                 if (!data?.session) navigate({ to: "/login" });
               }}
