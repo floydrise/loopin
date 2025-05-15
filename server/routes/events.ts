@@ -1,13 +1,16 @@
 import { Hono } from "hono";
 import { db } from "../db";
 import { eventsPostSchema, eventsTable, eventUpdateSchema } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { authMiddleware } from "../auth-middleware";
 
 const app = new Hono()
   .get("/", async (c) => {
-    const events = await db.select().from(eventsTable);
+    const events = await db
+      .select()
+      .from(eventsTable)
+      .orderBy(desc(eventsTable.createdAt));
     return c.json({ events });
   })
   .get("/:id{[0-9]+}", async (c) => {
