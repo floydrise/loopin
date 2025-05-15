@@ -76,7 +76,7 @@ function RouteComponent() {
           form.handleSubmit();
         }}
       >
-        <Card className="max-w-md m-auto">
+        <Card className="max-w-xl m-auto">
           <CardHeader>
             <CardTitle className={"flex items-center gap-2"}>
               <Pen /> Create a new experience
@@ -213,7 +213,7 @@ function RouteComponent() {
                     <div className="flex flex-col space-y-1.5">
                       <Label htmlFor={field.name}>Date:</Label>
                       <Popover>
-                        <PopoverTrigger asChild>
+                        <PopoverTrigger asChild id={field.name}>
                           <Button
                             variant={"outline"}
                             className={cn(
@@ -273,20 +273,25 @@ function RouteComponent() {
             </div>
           </CardContent>
           <Separator />
-          <CardFooter className={"flex justify-between"}>
+          <CardFooter className={"flex justify-between gap-2"}>
             <Button
               type="button"
               onClick={() => {
                 form.reset();
               }}
-              variant={"secondary"}
+              variant={"outline"}
+              className={"w-1/2"}
             >
               Reset
             </Button>
             <form.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
-                <Button type={"submit"} disabled={!canSubmit}>
+                <Button
+                  type={"submit"}
+                  disabled={!canSubmit}
+                  className={"w-1/2"}
+                >
                   {isSubmitting ? "..." : "Submit"}
                 </Button>
               )}

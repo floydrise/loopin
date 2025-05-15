@@ -1,4 +1,10 @@
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -32,9 +38,9 @@ import type {
 import { Button } from "@/components/ui/button.tsx";
 import {
   BadgeAlert,
-  Brush,
   CalendarIcon,
   Clock,
+  Eraser,
   MapPin,
   Trash,
 } from "lucide-react";
@@ -165,16 +171,27 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
         </Dialog>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <p className={"font-bold inline-flex"}>£{event.eventPrice}</p>
+        <p className={"font-bold inline-flex"}>
+          {event.eventPrice == 0 ? "Free" : "£" + event.eventPrice}
+        </p>
         <div className={"flex gap-2"}>
           {data?.user.role == "staff" ? (
             <div className={"flex gap-2"}>
               <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant={"destructive"}>
-                    <Trash />
-                  </Button>
-                </AlertDialogTrigger>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AlertDialogTrigger asChild>
+                        <Button variant={"destructive"}>
+                          <Trash />
+                        </Button>
+                      </AlertDialogTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Delete experience</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle className={"flex items-center gap-1 "}>
@@ -202,11 +219,20 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                 open={editDialogIsOpen}
                 onOpenChange={setEditDialogIsOpen}
               >
-                <DialogTrigger asChild>
-                  <Button className={"bg-violet-300 hover:bg-violet-300"}>
-                    <Brush />
-                  </Button>
-                </DialogTrigger>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DialogTrigger asChild>
+                        <Button className={"bg-violet-300 hover:bg-violet-300"}>
+                          <Eraser />
+                        </Button>
+                      </DialogTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Edit experience</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Edit Experience</DialogTitle>
@@ -440,21 +466,24 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
               </Dialog>
             </div>
           ) : null}
-          <Button
-            onClick={() => {
-              if (!data?.session) navigate({ to: "/login" });
-            }}
-            variant={"outline"}
-          >
-            Buy
-          </Button>
-          <Button
-            onClick={() => {
-              if (!data?.session) navigate({ to: "/login" });
-            }}
-          >
-            Subscribe
-          </Button>
+          {event.eventPrice == 0 ? (
+            <Button
+              onClick={() => {
+                if (!data?.session) navigate({ to: "/login" });
+              }}
+            >
+              Sign up
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                if (!data?.session) navigate({ to: "/login" });
+              }}
+              variant={"outline"}
+            >
+              Buy
+            </Button>
+          )}
         </div>
       </CardFooter>
     </Card>

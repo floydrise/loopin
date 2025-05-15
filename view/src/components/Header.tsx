@@ -12,7 +12,7 @@ export default function Header() {
   const { data } = useSession();
   const { theme } = useTheme();
   return (
-    <header className="p-4 mb-10 backdrop-blur-2xl gap-2">
+    <header className="p-4 mb-10 backdrop-blur-2xl gap-2 border-b-1">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
           {theme == "dark" ? (

@@ -33,7 +33,9 @@ export function ProfileDropdown({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={"mx-2 focus:outline-none"}>
+      <DropdownMenuTrigger
+        className={"mx-2 hover:cursor-pointer focus:outline-none"}
+      >
         <Avatar>
           <AvatarImage src={user.image ?? ""} alt="profile pic" />
           <AvatarFallback>{user.name}</AvatarFallback>
