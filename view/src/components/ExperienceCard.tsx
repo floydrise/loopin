@@ -48,7 +48,7 @@ import { useSession } from "@/lib/auth_client.ts";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteEvent, patchEvent } from "@/lib/api.ts";
+import { deleteEvent, patchEvent, postSubscription } from "@/lib/api.ts";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -77,7 +77,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
     eventTimeStart: event.eventTimeStart,
   };
 
-  // format time from hh:mm:ss to hh:mm
+  // format time from hh:mm:ss to hh:mm 👇🏻
   event.eventTimeStart = event.eventTimeStart.split(":").slice(0, 2).join(":");
   const isTooLong = event.eventDescription!.length > 100;
 
@@ -93,6 +93,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
     },
   });
 
+  // user data 👇🏻
   const { data } = useSession();
   const navigate = useNavigate();
   const [editDialogIsOpen, setEditDialogIsOpen] = useState(false);
@@ -102,6 +103,17 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fetch_events"] });
       toast.success("Successfully deleted event!");
+    },
+    onError: (error) => {
+      toast.error("An error occurred: " + error);
+    },
+  });
+
+  const subscriptionMutation = useMutation({
+    mutationFn: (userInput: { eventId: number; userId: string }) =>
+      postSubscription(userInput.eventId, userInput.userId),
+    onSuccess: () => {
+      toast.success("Successfully added subscription");
     },
     onError: (error) => {
       toast.error("An error occurred: " + error);
@@ -136,10 +148,18 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       <CardContent className={"flex-1"}>
         <p
           className={`text-sm text-muted-foreground ${isTooLong ? "hover:cursor-pointer" : null}`}
-          onClick={() => navigate({to: "/experiences/$experienceId", params: {experienceId: String(event.eventId)}})}
+          onClick={() =>
+            navigate({
+              to: "/experiences/$experienceId",
+              params: { experienceId: String(event.eventId) },
+            })
+          }
         >
           {isTooLong ? (
-            <span>{event?.eventDescription?.slice(0, 90) + "... "}<span className={"font-semibold"}>Read more</span></span>
+            <span>
+              {event?.eventDescription?.slice(0, 90) + "... "}
+              <span className={"font-semibold"}>Read more</span>
+            </span>
           ) : (
             event.eventDescription
           )}
@@ -451,7 +471,14 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
             <Button
               variant={"outline"}
               onClick={() => {
-                if (!data?.session) navigate({ to: "/login" });
+                if (!data) {
+                  navigate({ to: "/login" });
+                } else {
+                  subscriptionMutation.mutate({
+                    eventId: event.eventId,
+                    userId: data.user.id,
+                  });
+                }
               }}
             >
               Sign up

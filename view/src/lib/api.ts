@@ -75,3 +75,17 @@ export const getEventByIdQueryOptions = (eventId: string) => {
     queryFn: () => fetchEventById(eventId),
   });
 };
+
+export const postSubscription = async (eventId: number, userId: string) => {
+  const res = await api.subscriptions.$post({
+    json: {
+      eventId: eventId,
+      userId: userId,
+    },
+  });
+  if (!res.ok) {
+    toast.error("An error occurred while adding subscription");
+    throw new Error("An error occurred while creating the event");
+  }
+  return await res.json();
+};
