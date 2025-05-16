@@ -20,9 +20,9 @@ import { useMediaQuery } from "usehooks-ts";
 import { Calendar, CircleEllipsis, Rocket, Trash } from "lucide-react";
 import { type ReactElement, useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteSubscription } from "@/lib/api.ts";
-import { toast } from "sonner";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchAccessTokeQueryOptions } from "@/lib/api.ts";
+import { deleteMutation } from "@/lib/mutations.tsx";
 
 type Status = {
   value: string;
@@ -51,6 +51,9 @@ const statuses: Status[] = [
 export function SubscriptionMenu({ eventId }: { eventId: number }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { data, isFetched } = useQuery(fetchAccessTokeQueryOptions);
+  const accessToken = data?.data?.accessToken;
+  const errorAccessToken = data?.error?.status;
 
   if (isDesktop) {
     return (
@@ -59,7 +62,14 @@ export function SubscriptionMenu({ eventId }: { eventId: number }) {
           <CircleEllipsis size={20} className={"shrink-0"} />
         </PopoverTrigger>
         <PopoverContent className="w-fit p-0" align="start">
-          <StatusList setOpen={setOpen} eventId={eventId} />
+          {isFetched && (
+            <StatusList
+              setOpen={setOpen}
+              eventId={eventId}
+              accessToken={accessToken}
+              errorAccessToken={errorAccessToken}
+            />
+          )}
         </PopoverContent>
       </Popover>
     );
@@ -75,7 +85,12 @@ export function SubscriptionMenu({ eventId }: { eventId: number }) {
           <DrawerTitle>Actions</DrawerTitle>
         </VisuallyHidden>
         <div className="mt-4 border-t">
-          <StatusList setOpen={setOpen} eventId={eventId} />
+          <StatusList
+            setOpen={setOpen}
+            eventId={eventId}
+            accessToken={accessToken}
+            errorAccessToken={errorAccessToken}
+          />
         </div>
       </DrawerContent>
     </Drawer>
@@ -85,40 +100,40 @@ export function SubscriptionMenu({ eventId }: { eventId: number }) {
 function StatusList({
   setOpen,
   eventId,
+  accessToken,
+  errorAccessToken,
 }: {
   setOpen: (open: boolean) => void;
   eventId: number;
+  accessToken: string | undefined;
+  errorAccessToken: number | undefined;
 }) {
+  let filteredStatuses = [...statuses];
+  if (errorAccessToken == 400)
+    filteredStatuses = filteredStatuses.filter(
+      (val) => val.value !== "addToGoogleCalendar",
+    );
   const queryClient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteSubscription(id),
-    onError: (error) => {
-      toast.error("An error occurred: " + error.message);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["fetch_subscriptions"] });
-      toast.success("Successfully removed subscription");
-    },
-  });
+  const deleteSubscription = deleteMutation(queryClient);
   return (
     <Command>
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
-          {statuses.map((status) => (
+          {filteredStatuses.map((status) => (
             <CommandItem
               key={status.value}
               value={status.value}
               onSelect={(value) => {
                 switch (value) {
                   case "delete":
-                    deleteMutation.mutate(eventId);
+                    deleteSubscription.mutate(eventId);
                     break;
                   case "share":
                     console.log("Working share");
                     break;
                   case "addToGoogleCalendar":
-                    console.log("Working addToGoogleCalendar");
+                    console.log(accessToken);
                     break;
                 }
                 setOpen(false);

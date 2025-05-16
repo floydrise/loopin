@@ -6,6 +6,7 @@ import type {
   eventUpdateType,
 } from "../../../server/types.ts";
 import { toast } from "sonner";
+import { getAccessToken } from "@/lib/auth_client.ts";
 
 const api = hc<AppType>("/").api;
 
@@ -87,6 +88,11 @@ export const deleteSubscription = async (id: number) => {
     throw new Error("An error occurred while deleting the subscription");
   return await res.json();
 };
+export const fetchAccessToken = async () => {
+  return await getAccessToken({
+    providerId: "google",
+  });
+};
 
 // QueryOptions
 export const getEventsQueryOptions = queryOptions({
@@ -103,5 +109,10 @@ export const getEventByIdQueryOptions = (eventId: string) => {
 export const getSubscriptionsQueryOptions = queryOptions({
   queryKey: ["fetch_subscriptions"],
   queryFn: fetchSubscriptions,
+  staleTime: 5 * 1000,
+});
+export const fetchAccessTokeQueryOptions = queryOptions({
+  queryKey: ["fetch_access_toke"],
+  queryFn: fetchAccessToken,
   staleTime: 5 * 1000,
 });

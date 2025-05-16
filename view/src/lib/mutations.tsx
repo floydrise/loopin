@@ -1,5 +1,5 @@
 import { type QueryClient, useMutation } from "@tanstack/react-query";
-import { postSubscription } from "./api";
+import { deleteSubscription, postSubscription } from "./api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
@@ -26,3 +26,16 @@ export const subscriptionMutation = (queryClient: QueryClient) => {
     },
   });
 };
+
+export const deleteMutation = (queryClient: QueryClient) => {
+  return useMutation({
+    mutationFn: (id: number) => deleteSubscription(id),
+    onError: (error) => {
+      toast.error("An error occurred: " + error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetch_subscriptions"] });
+      toast.success("Successfully removed subscription");
+    },
+  });
+}

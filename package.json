@@ -5,18 +5,18 @@
   },
   "dependencies": {
     "@hono/zod-validator": "^0.5.0",
-    "better-auth": "^1.2.7",
+    "better-auth": "^1.2.8",
     "drizzle-orm": "^0.43.1",
     "drizzle-seed": "^0.3.1",
     "drizzle-zod": "^0.7.1",
     "hono": "^4.7.9",
-    "pg": "^8.15.6",
+    "pg": "^8.16.0",
     "prettier": "^3.5.3",
     "zod": "^3.24.4"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/pg": "^8.15.1",
+    "@types/pg": "^8.15.2",
     "drizzle-kit": "^0.31.1",
     "tsx": "^4.19.4"
   }

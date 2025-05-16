@@ -14,6 +14,7 @@ export const Route = createFileRoute("/profile")({
 
 function RouteComponent() {
   const { data } = useSession();
+
   const user = data?.user;
   const {
     isLoading,
@@ -74,7 +75,10 @@ function RouteComponent() {
           </p>
         ) : (
           queryData?.map((event) => (
-            <SubscriptionTicket event={event} key={event.eventId} />
+            <SubscriptionTicket
+              event={event}
+              key={event.eventId}
+            />
           ))
         )}
       </section>
