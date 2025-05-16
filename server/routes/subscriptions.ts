@@ -2,15 +2,17 @@ import { Hono } from "hono";
 import { authMiddleware } from "../auth-middleware";
 import { db } from "../db";
 import { eventsTable, eventUserPostSchema, eventUserTable } from "../db/schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, getTableColumns } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 
 const app = new Hono()
   .get("/", authMiddleware, async (c) => {
     const user = c.get("user");
     if (!user) return c.json({ msg: "Not authorised!" }, 401);
+    const { eventDescription, createdAt, ...rest } =
+      getTableColumns(eventsTable);
     const subscriptions = await db
-      .select({ event: eventsTable })
+      .select({ ...rest })
       .from(eventsTable)
       .innerJoin(
         eventUserTable,
