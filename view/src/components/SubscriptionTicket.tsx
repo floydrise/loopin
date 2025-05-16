@@ -1,5 +1,5 @@
 import type { SubscriptionTicketType } from "../../../server/types.ts";
-import { CalendarIcon, CircleEllipsis, Clock, MapPin, Tag } from "lucide-react";
+import { CalendarIcon, Clock, MapPin, Tag } from "lucide-react";
 import { format } from "date-fns";
 import {
   Tooltip,
@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
+import { SubscriptionMenu } from "@/components/SubscriptionMenu.tsx";
 
 const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
   event.eventTimeStart = event.eventTimeStart!.split(":").slice(0, 2).join(":");
@@ -42,7 +43,7 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
               event.eventName
             )}
           </h2>
-          <CircleEllipsis size={20} className={"shrink-0"} />
+          <SubscriptionMenu />
         </div>
         <span className={"flex items-center text-muted-foreground"}>
           <MapPin /> <p>{event.eventLocation}</p>

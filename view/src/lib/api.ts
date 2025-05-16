@@ -67,7 +67,6 @@ export const postSubscription = async (eventId: number, userId: string) => {
     },
   });
   if (!res.ok) {
-    // toast.error("An error occurred while adding subscription");
     throw new Error("subscription already exists in your records");
   }
   return await res.json();

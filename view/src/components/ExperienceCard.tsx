@@ -117,7 +117,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       queryClient.invalidateQueries({ queryKey: ["fetch_subscriptions"] });
     },
     onError: (error) => {
-      toast.error("An error occurred: " + error.message);
+      toast.warning("Warning: " + error.message);
     },
   });
 

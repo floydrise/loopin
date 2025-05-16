@@ -2,14 +2,16 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useSession } from "@/lib/auth_client.ts";
-import { Brush, House, Telescope } from "lucide-react";
+import { Brush, House, LogIn, Telescope } from "lucide-react";
 import { ProfileDropdown } from "@/components/ProfileDropdown.tsx";
 import { MenuDropdown } from "@/components/MenuDropdown.tsx";
 import logo from "/loopin_purple.png?url";
+import { useMediaQuery } from "usehooks-ts";
 
 export default function Header() {
   const { pathname } = useLocation();
   const { data } = useSession();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
     <header className="p-4 mb-10 backdrop-blur-2xl gap-2 border-b-1">
       <nav className="flex flex-row justify-between items-center gap-4">
@@ -20,7 +22,7 @@ export default function Header() {
           <div className={"md:flex gap-2 hidden items-center justify-center"}>
             {data?.user.role == "staff" ? (
               <Button
-                className={"bg-violet-300 hover:bg-violet-300 hidden md:flex"}
+                variant={pathname == "/create" ? "default" : "ghost"}
                 asChild
               >
                 <Link to="/create">
@@ -47,13 +49,19 @@ export default function Header() {
             </Button>
           </div>
           <MenuDropdown />
-          {data?.user ? (
-            <ProfileDropdown user={data.user} />
-          ) : (
-            <Button variant={"secondary"} asChild>
-              <Link to="/login">Login</Link>
-            </Button>
-          )}
+          {isDesktop &&
+            (data?.user ? (
+              <ProfileDropdown user={data.user} />
+            ) : (
+              <Button
+                variant={pathname == "/login" ? "default" : "ghost"}
+                asChild
+              >
+                <Link to="/login">
+                  <LogIn /> Login
+                </Link>
+              </Button>
+            ))}
           <div>
             <ModeToggle />
           </div>
