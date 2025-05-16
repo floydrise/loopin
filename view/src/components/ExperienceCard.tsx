@@ -105,7 +105,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       toast.success("Successfully deleted event!");
     },
     onError: (error) => {
-      toast.error("An error occurred: " + error);
+      toast.error("An error occurred: " + error.message);
     },
   });
 
@@ -114,9 +114,10 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       postSubscription(userInput.eventId, userInput.userId),
     onSuccess: () => {
       toast.success("Successfully added subscription");
+      queryClient.invalidateQueries({ queryKey: ["fetch_subscriptions"] });
     },
     onError: (error) => {
-      toast.error("An error occurred: " + error);
+      toast.error("An error occurred: " + error.message);
     },
   });
 

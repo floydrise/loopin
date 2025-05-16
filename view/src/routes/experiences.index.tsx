@@ -4,6 +4,7 @@ import { getEventsQueryOptions } from "@/lib/api.ts";
 import ExperienceCard from "@/components/ExperienceCard.tsx";
 import type { eventSelectType } from "../../../server/types.ts";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/experiences/")({
   component: RouteComponent,
@@ -11,7 +12,9 @@ export const Route = createFileRoute("/experiences/")({
 
 function RouteComponent() {
   const { isLoading, isError, data, error } = useQuery(getEventsQueryOptions);
-  if (isError) return <p>{error.message}</p>;
+  if (isError) {
+    toast.error("An error occurred: " + error);
+  }
   const events = data?.events;
 
   return (
