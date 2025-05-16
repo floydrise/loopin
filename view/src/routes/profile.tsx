@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSession } from "@/lib/auth_client.ts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -58,9 +58,19 @@ function RouteComponent() {
       </div>
       <h1 className={"text-2xl font-bold ml-4"}>My orders:</h1>
       <section className={"grid grid-cols-1 md:grid-cols-2 gap-4 my-6"}>
-        {queryData?.map((event) => (
-          <SubscriptionTicket event={event} key={event.eventId} />
-        ))}
+        {queryData?.length == 0 ? (
+          <p className={"ml-6 text-muted-foreground font-light"}>
+            No orders yet, why don't you{" "}
+            <Link to={"/experiences"} className={"underline"}>
+              add
+            </Link>{" "}
+            one?
+          </p>
+        ) : (
+          queryData?.map((event) => (
+            <SubscriptionTicket event={event} key={event.eventId} />
+          ))
+        )}
       </section>
     </div>
   );

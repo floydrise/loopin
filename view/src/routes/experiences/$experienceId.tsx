@@ -1,5 +1,5 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEventByIdQueryOptions } from "@/lib/api.ts";
 import { CalendarIcon, Clock, MapPin, Tag } from "lucide-react";
 import { format } from "date-fns";
@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { useSession } from "@/lib/auth_client.ts";
+import { subscriptionMutation } from "@/lib/mutations.tsx";
 
 export const Route = createFileRoute("/experiences/$experienceId")({
   loader: ({ params: { experienceId } }) => {
@@ -20,10 +22,14 @@ export const Route = createFileRoute("/experiences/$experienceId")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const { data: authData } = useSession();
   const { experienceId } = Route.useParams();
   const { isLoading, isError, data, error } = useQuery(
     getEventByIdQueryOptions(experienceId),
   );
+  const queryClient = useQueryClient();
+  const subscribeToExperience = subscriptionMutation(queryClient);
   if (isLoading)
     return (
       <section className={"flex justify-center items-center flex-col gap-2"}>
@@ -142,11 +148,32 @@ function RouteComponent() {
               button.
             </p>
           </span>
-          <Button className={"w-5/6"}>Sign Up</Button>
+          <Button
+            className={"w-5/6"}
+            onClick={() => {
+              if (!authData) {
+                navigate({ to: "/login" });
+              } else {
+                subscribeToExperience.mutate({
+                  eventId: event.eventId,
+                  userId: authData.user.id,
+                });
+              }
+            }}
+          >
+            Sign Up
+          </Button>
         </section>
       ) : (
         <div className={"my-6 w-72"}>
-          <Button className={"w-full"}>Purchase</Button>
+          <Button
+            className={"w-full"}
+            onClick={() => {
+              if (!authData?.user) navigate({ to: "/login" });
+            }}
+          >
+            Purchase
+          </Button>
         </div>
       )}
     </section>

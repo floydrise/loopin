@@ -41,6 +41,7 @@ import {
   CalendarIcon,
   Clock,
   Eraser,
+
   MapPin,
   Trash,
 } from "lucide-react";
@@ -48,7 +49,7 @@ import { useSession } from "@/lib/auth_client.ts";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteEvent, patchEvent, postSubscription } from "@/lib/api.ts";
+import { deleteEvent, patchEvent } from "@/lib/api.ts";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -65,6 +66,7 @@ import { cn } from "@/lib/utils.ts";
 import { format } from "date-fns";
 import { FieldInfo } from "@/routes/create.tsx";
 import { useForm } from "@tanstack/react-form";
+import { subscriptionMutation } from "@/lib/mutations.tsx";
 
 const ExperienceCard = ({ event }: { event: eventSelectType }) => {
   const expDefVal: eventUpdateType = {
@@ -109,17 +111,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
     },
   });
 
-  const subscriptionMutation = useMutation({
-    mutationFn: (userInput: { eventId: number; userId: string }) =>
-      postSubscription(userInput.eventId, userInput.userId),
-    onSuccess: () => {
-      toast.success("Successfully added subscription");
-      queryClient.invalidateQueries({ queryKey: ["fetch_subscriptions"] });
-    },
-    onError: (error) => {
-      toast.warning("Warning: " + error.message);
-    },
-  });
+  const subscribeToExperience = subscriptionMutation(queryClient);
 
   return (
     <Card className="w-full max-w-md overflow-hidden pt-0 scale-95 transform transition duration-500 hover:scale-100">
@@ -475,7 +467,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                 if (!data) {
                   navigate({ to: "/login" });
                 } else {
-                  subscriptionMutation.mutate({
+                  subscribeToExperience.mutate({
                     eventId: event.eventId,
                     userId: data.user.id,
                   });
