@@ -28,7 +28,7 @@ function RouteComponent() {
   return (
     <div className={"md:mx-30"}>
       <h1 className={"text-2xl font-bold ml-4"}>My profile:</h1>
-      <div className={"flex ml-8 items-center gap-1"}>
+      <div className={"flex ml-8 items-center gap-1 my-6"}>
         <Avatar className={"size-14 border border-black"}>
           <AvatarImage src={user?.image ?? ""} alt="User avatar image" />
           <AvatarFallback>CN</AvatarFallback>
@@ -56,7 +56,7 @@ function RouteComponent() {
           </p>
         </div>
       </div>
-      <h1 className={"text-2xl mt-10 font-bold ml-4"}>My orders:</h1>
+      <h1 className={"text-2xl font-bold ml-4"}>My orders:</h1>
       <section className={"grid grid-cols-1 md:grid-cols-2 gap-4 my-6"}>
         {queryData?.map((event) => (
           <SubscriptionTicket event={event} key={event.eventId} />

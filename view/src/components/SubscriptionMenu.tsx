@@ -20,6 +20,9 @@ import { useMediaQuery } from "usehooks-ts";
 import { Calendar, CircleEllipsis, Rocket, Trash } from "lucide-react";
 import { type ReactElement, useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteSubscription } from "@/lib/api.ts";
+import { toast } from "sonner";
 
 type Status = {
   value: string;
@@ -45,7 +48,7 @@ const statuses: Status[] = [
   },
 ];
 
-export function SubscriptionMenu() {
+export function SubscriptionMenu({ eventId }: { eventId: number }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -56,7 +59,7 @@ export function SubscriptionMenu() {
           <CircleEllipsis size={20} className={"shrink-0"} />
         </PopoverTrigger>
         <PopoverContent className="w-fit p-0" align="start">
-          <StatusList setOpen={setOpen} />
+          <StatusList setOpen={setOpen} eventId={eventId} />
         </PopoverContent>
       </Popover>
     );
@@ -72,14 +75,31 @@ export function SubscriptionMenu() {
           <DrawerTitle>Actions</DrawerTitle>
         </VisuallyHidden>
         <div className="mt-4 border-t">
-          <StatusList setOpen={setOpen} />
+          <StatusList setOpen={setOpen} eventId={eventId} />
         </div>
       </DrawerContent>
     </Drawer>
   );
 }
 
-function StatusList({ setOpen }: { setOpen: (open: boolean) => void }) {
+function StatusList({
+  setOpen,
+  eventId,
+}: {
+  setOpen: (open: boolean) => void;
+  eventId: number;
+}) {
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => deleteSubscription(id),
+    onError: (error) => {
+      toast.error("An error occurred: " + error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetch_subscriptions"] });
+      toast.success("Successfully removed subscription");
+    },
+  });
   return (
     <Command>
       <CommandList>
@@ -92,7 +112,7 @@ function StatusList({ setOpen }: { setOpen: (open: boolean) => void }) {
               onSelect={(value) => {
                 switch (value) {
                   case "delete":
-                    console.log("Working delete");
+                    deleteMutation.mutate(eventId);
                     break;
                   case "share":
                     console.log("Working share");

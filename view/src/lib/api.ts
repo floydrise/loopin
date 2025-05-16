@@ -77,6 +77,16 @@ export const fetchSubscriptions = async () => {
     throw new Error("An error occurred while fetching subscriptions");
   return await res.json();
 };
+export const deleteSubscription = async (id: number) => {
+  const res = await api.subscriptions[":id{[0-9]+}"].$delete({
+    param: {
+      id: String(id),
+    },
+  });
+  if (!res.ok)
+    throw new Error("An error occurred while deleting the subscription");
+  return await res.json();
+};
 
 // QueryOptions
 export const getEventsQueryOptions = queryOptions({
