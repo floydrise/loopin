@@ -14,12 +14,18 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
   event.eventTimeStart = event.eventTimeStart!.split(":").slice(0, 2).join(":");
   const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
   return (
-    <div className={"flex max-w-md gap-2 border-2 p-3 mx-2 rounded-lg"}>
-      <div className={"w-56 "}>
+    <div
+      className={
+        "group flex max-w-md gap-2 border-1 bg-primary-foreground dark:bg-primary-foreground p-3 mx-2 rounded-lg"
+      }
+    >
+      <div className={"group w-56 bg-cover overflow-hidden rounded-sm"}>
         <img
           src={event.eventImg!}
           alt={"Image of the event"}
-          className={"rounded-xs"}
+          className={
+            "rounded-sm w-full h-full object-cover transition duration-1000 group-hover:scale-125"
+          }
         />
       </div>
       <div>
@@ -28,11 +34,11 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
             className={"font-semibold text-base"}
             onClick={() => setTooltipIsOpen(!tooltipIsOpen)}
           >
-            {event?.eventName.length > 10 ? (
+            {event?.eventName.length > 12 ? (
               <TooltipProvider>
                 <Tooltip open={tooltipIsOpen} onOpenChange={setTooltipIsOpen}>
                   <TooltipTrigger asChild>
-                    <span>{event.eventName.slice(0, 9) + "..."}</span>
+                    <span>{event.eventName.slice(0, 12) + "..."}</span>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>{event.eventName}</p>

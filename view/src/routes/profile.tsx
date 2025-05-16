@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getSubscriptionsQueryOptions } from "@/lib/api.ts";
 import { toast } from "sonner";
 import SubscriptionTicket from "@/components/SubscriptionTicket.tsx";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 export const Route = createFileRoute("/profile")({
   component: RouteComponent,
@@ -23,7 +24,6 @@ function RouteComponent() {
   if (isError) {
     toast.error("An error occurred: " + error);
   }
-  if (isLoading) return <p>Loading</p>;
 
   return (
     <div className={"md:mx-30"}>
@@ -58,7 +58,13 @@ function RouteComponent() {
       </div>
       <h1 className={"text-2xl font-bold ml-4"}>My orders:</h1>
       <section className={"grid grid-cols-1 md:grid-cols-2 gap-4 my-6"}>
-        {queryData?.length == 0 ? (
+        {isLoading ? (
+          new Array(4)
+            .fill(null)
+            .map((_, index) => (
+              <Skeleton key={index} className={"max-w-md h-44 mx-2"} />
+            ))
+        ) : queryData?.length == 0 ? (
           <p className={"ml-6 text-muted-foreground font-light"}>
             No orders yet, why don't you{" "}
             <Link to={"/experiences"} className={"underline"}>

@@ -114,12 +114,12 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
   const subscribeToExperience = subscriptionMutation(queryClient);
 
   return (
-    <Card className="w-full max-w-md overflow-hidden pt-0 scale-95 transform transition duration-500 hover:scale-100">
-      <div className="relative h-48 pt-0 w-full overflow-hidden">
+    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95">
+      <div className="group relative h-48 pt-0 w-full overflow-hidden bg-cover">
         <img
           src={event.eventImg!}
           alt="Card image"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition duration-1000 group-hover:scale-125"
         />
       </div>
       <CardHeader>

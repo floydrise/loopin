@@ -144,7 +144,7 @@ function RouteComponent() {
           <span className={"inline-flex gap-2"}>
             <p className={"max-w-md font-light text-sm text-center italic"}>
               You can register for this event for{" "}
-              <span className={"underline"}>FREE</span> 🎉! Please, click the
+              <span className={"underline"}>FREE</span> 🎉 ! Please, click the
               button.
             </p>
           </span>

@@ -20,16 +20,6 @@ export default function Header() {
         </Link>
         <div className={"flex gap-4 justify-center items-center"}>
           <div className={"md:flex gap-2 hidden items-center justify-center"}>
-            {data?.user.role == "staff" ? (
-              <Button
-                variant={pathname == "/create" ? "default" : "ghost"}
-                asChild
-              >
-                <Link to="/create">
-                  <Brush /> Create
-                </Link>
-              </Button>
-            ) : null}
             <Button
               variant={pathname == "/" ? "default" : "ghost"}
               className={"hidden md:flex"}
@@ -47,6 +37,16 @@ export default function Header() {
                 <Telescope /> Experiences
               </Link>
             </Button>
+            {data?.user.role == "staff" ? (
+              <Button
+                variant={pathname == "/create" ? "default" : "ghost"}
+                asChild
+              >
+                <Link to="/create">
+                  <Brush /> Create
+                </Link>
+              </Button>
+            ) : null}
           </div>
           <MenuDropdown />
           {isDesktop &&
