@@ -1,7 +1,12 @@
-import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  notFound,
+  useLocation,
+  useNavigate,
+} from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEventByIdQueryOptions } from "@/lib/api.ts";
-import { CalendarIcon, Clock, MapPin, Tag } from "lucide-react";
+import { CalendarIcon, Clock, Mail, Mailbox, MapPin, Tag } from "lucide-react";
 import { format } from "date-fns";
 import {
   Tooltip,
@@ -13,6 +18,21 @@ import { Button } from "@/components/ui/button.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { useSession } from "@/lib/auth_client.ts";
 import { subscriptionMutation } from "@/lib/mutations.tsx";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  RedditShareButton,
+  ThreadsShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+import {
+  FaFacebook,
+  FaReddit,
+  FaThreads,
+  FaWhatsapp,
+  FaXTwitter,
+} from "react-icons/fa6";
 
 export const Route = createFileRoute("/experiences/$experienceId")({
   loader: ({ params: { experienceId } }) => {
@@ -30,6 +50,8 @@ function RouteComponent() {
   );
   const queryClient = useQueryClient();
   const subscribeToExperience = subscriptionMutation(queryClient);
+  const { pathname } = useLocation();
+  console.log(pathname);
   if (isLoading)
     return (
       <section className={"flex justify-center items-center flex-col gap-2"}>
@@ -133,6 +155,36 @@ function RouteComponent() {
           </Tooltip>
         </TooltipProvider>
       </section>
+      <div className={"flex gap-4"}>
+        <FacebookShareButton
+          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          htmlTitle={"Facebook share button"}
+          hashtag={"#attending"}
+        >
+          <FaFacebook className={"size-5"} />
+        </FacebookShareButton>
+        <TwitterShareButton
+          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          htmlTitle={"X(Twitter) share button"}
+          hashtags={["#attending", "#feelinggreat", "#happy", "#event"]}
+          title={event?.eventName}
+        >
+          <FaXTwitter className={"size-5 stroke-gray-500"} />
+        </TwitterShareButton>
+        <ThreadsShareButton
+          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          title={event?.eventName}
+        >
+          <FaThreads className={"size-5"} />
+        </ThreadsShareButton>
+        <WhatsappShareButton
+          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          htmlTitle={"WhatsApp share button"}
+          title={event?.eventName}
+        >
+          <FaWhatsapp className={"size-5"} />
+        </WhatsappShareButton>
+      </div>
       <h1 className={"font-semibold text-2xl md:text-3xl"}>
         {event?.eventName}
       </h1>
