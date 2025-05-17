@@ -1,9 +1,14 @@
 import { type QueryClient, useMutation } from "@tanstack/react-query";
-import { deleteSubscription, postSubscription } from "./api";
+import {
+  deleteSubscription,
+  postSubscription,
+  postToGoogleCalendar,
+} from "./api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Eye } from "lucide-react";
+import type { SubscriptionTicketType } from "../../../server/types.ts";
 
 export const subscriptionMutation = (queryClient: QueryClient) => {
   return useMutation({
@@ -38,4 +43,19 @@ export const deleteMutation = (queryClient: QueryClient) => {
       toast.success("Successfully removed subscription");
     },
   });
-}
+};
+
+export const postToGoogleCalendarMutation = () => {
+  return useMutation({
+    mutationFn: (userInput: {
+      event: SubscriptionTicketType;
+      accessToken: string | undefined;
+    }) => postToGoogleCalendar(userInput.event, userInput.accessToken),
+    onError: (error) => {
+      toast.error("An error occurred: " + error.message);
+    },
+    onSuccess: () => {
+      toast.success("Successfully added experience to calendar");
+    },
+  });
+};

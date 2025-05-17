@@ -49,7 +49,7 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
               event.eventName
             )}
           </h2>
-          <SubscriptionMenu eventId={event.eventId} />
+          <SubscriptionMenu event={event} />
         </div>
         <span className={"flex items-center text-muted-foreground"}>
           <MapPin /> <p>{event.eventLocation}</p>

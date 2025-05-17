@@ -10,14 +10,16 @@ export const auth = betterAuth({
   }),
   socialProviders: {
     github: {
+      prompt: "select_account",
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
     google: {
-      prompt: "select_account",
+      prompt: "consent",
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       scope: ["https://www.googleapis.com/auth/calendar"],
+      accessType: "offline",
     },
   },
   trustedOrigins: ["http://localhost:5173", "http://localhost:3000"],

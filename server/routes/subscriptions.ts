@@ -9,8 +9,7 @@ const app = new Hono()
   .get("/", authMiddleware, async (c) => {
     const user = c.get("user");
     if (!user) return c.json({ msg: "Not authorised!" }, 401);
-    const { eventDescription, createdAt, ...rest } =
-      getTableColumns(eventsTable);
+    const { createdAt, ...rest } = getTableColumns(eventsTable);
     const subscriptions = await db
       .select({ ...rest })
       .from(eventsTable)

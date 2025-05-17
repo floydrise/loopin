@@ -17,12 +17,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useMediaQuery } from "usehooks-ts";
-import { Calendar, CircleEllipsis, Rocket, Trash } from "lucide-react";
+import { Calendar, CircleEllipsis, Trash } from "lucide-react";
 import { type ReactElement, useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchAccessTokeQueryOptions } from "@/lib/api.ts";
-import { deleteMutation } from "@/lib/mutations.tsx";
+import { fetchAccessTokenQueryOptions } from "@/lib/api.ts";
+import {
+  deleteMutation,
+  postToGoogleCalendarMutation,
+} from "@/lib/mutations.tsx";
+import type { SubscriptionTicketType } from "../../../server/types.ts";
 
 type Status = {
   value: string;
@@ -37,23 +41,17 @@ const statuses: Status[] = [
     icon: <Trash />,
   },
   {
-    value: "share",
-    label: "Share",
-    icon: <Rocket />,
-  },
-  {
     value: "addToGoogleCalendar",
     label: "Add to Google Calendar",
     icon: <Calendar />,
   },
 ];
 
-export function SubscriptionMenu({ eventId }: { eventId: number }) {
+export function SubscriptionMenu({ event }: { event: SubscriptionTicketType }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const { data, isFetched } = useQuery(fetchAccessTokeQueryOptions);
-  const accessToken = data?.data?.accessToken;
-  const errorAccessToken = data?.error?.status;
+  const { data, isFetched } = useQuery(fetchAccessTokenQueryOptions);
+  console.log(data?.data);
 
   if (isDesktop) {
     return (
@@ -65,9 +63,9 @@ export function SubscriptionMenu({ eventId }: { eventId: number }) {
           {isFetched && (
             <StatusList
               setOpen={setOpen}
-              eventId={eventId}
-              accessToken={accessToken}
-              errorAccessToken={errorAccessToken}
+              event={event}
+              accessToken={data?.data?.accessToken}
+              errorAccessToken={data?.error?.status}
             />
           )}
         </PopoverContent>
@@ -87,9 +85,9 @@ export function SubscriptionMenu({ eventId }: { eventId: number }) {
         <div className="mt-4 border-t">
           <StatusList
             setOpen={setOpen}
-            eventId={eventId}
-            accessToken={accessToken}
-            errorAccessToken={errorAccessToken}
+            event={event}
+            accessToken={data?.data?.accessToken}
+            errorAccessToken={data?.error?.status}
           />
         </div>
       </DrawerContent>
@@ -99,22 +97,25 @@ export function SubscriptionMenu({ eventId }: { eventId: number }) {
 
 function StatusList({
   setOpen,
-  eventId,
+  event,
   accessToken,
   errorAccessToken,
 }: {
   setOpen: (open: boolean) => void;
-  eventId: number;
+  event: SubscriptionTicketType;
   accessToken: string | undefined;
   errorAccessToken: number | undefined;
 }) {
   let filteredStatuses = [...statuses];
-  if (errorAccessToken == 400)
+  if (errorAccessToken === 400)
     filteredStatuses = filteredStatuses.filter(
       (val) => val.value !== "addToGoogleCalendar",
     );
+
   const queryClient = useQueryClient();
   const deleteSubscription = deleteMutation(queryClient);
+  const addToGoogleCalendar = postToGoogleCalendarMutation();
+  console.log(event.eventDescription);
   return (
     <Command>
       <CommandList>
@@ -127,13 +128,10 @@ function StatusList({
               onSelect={(value) => {
                 switch (value) {
                   case "delete":
-                    deleteSubscription.mutate(eventId);
-                    break;
-                  case "share":
-                    console.log("Working share");
+                    deleteSubscription.mutate(event.eventId);
                     break;
                   case "addToGoogleCalendar":
-                    console.log(accessToken);
+                    addToGoogleCalendar.mutate({ event, accessToken });
                     break;
                 }
                 setOpen(false);

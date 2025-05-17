@@ -4,9 +4,11 @@ import { hc } from "hono/client";
 import type {
   eventInsertType,
   eventUpdateType,
+  SubscriptionTicketType,
 } from "../../../server/types.ts";
 import { toast } from "sonner";
 import { getAccessToken } from "@/lib/auth_client.ts";
+import { DateTime } from "luxon";
 
 const api = hc<AppType>("/").api;
 
@@ -93,6 +95,50 @@ export const fetchAccessToken = async () => {
     providerId: "google",
   });
 };
+export const postToGoogleCalendar = async (
+  event: SubscriptionTicketType,
+  accessToken: string | undefined,
+) => {
+  if (accessToken == undefined) throw new Error("No access token");
+  const timezone = "Europe/Sofia";
+  const start = DateTime.fromISO(
+    `${event.eventDateStart}T${event.eventTimeStart}`,
+    { zone: timezone },
+  );
+  const end = start.plus({ hour: 1 });
+  const googleEvent = {
+    summary: event.eventName,
+    start: {
+      dateTime: start.toISO(),
+      timeZone: timezone,
+    },
+    end: {
+      dateTime: end.toISO(),
+      timeZone: timezone,
+    },
+    location: event.eventLocation,
+    description:
+      event.eventDescription ||
+      `Price: ${event.eventPrice == 0 ? "Free" : event.eventPrice}`,
+  };
+  const res = await fetch(
+    "https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all",
+    {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+      body: JSON.stringify(googleEvent),
+    },
+  );
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(
+      error.error?.message || "Failed to add experience to Google Calendar",
+    );
+  }
+  return await res.json();
+};
 
 // QueryOptions
 export const getEventsQueryOptions = queryOptions({
@@ -111,8 +157,9 @@ export const getSubscriptionsQueryOptions = queryOptions({
   queryFn: fetchSubscriptions,
   staleTime: 5 * 1000,
 });
-export const fetchAccessTokeQueryOptions = queryOptions({
+export const fetchAccessTokenQueryOptions = queryOptions({
   queryKey: ["fetch_access_toke"],
-  queryFn: fetchAccessToken,
-  staleTime: 5 * 1000,
+  queryFn: async () => await getAccessToken({
+    providerId: "google",
+  }),
 });
