@@ -13,7 +13,7 @@ export default function Header() {
   const { data } = useSession();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
-    <header className="p-4 mb-10 backdrop-blur-2xl gap-2 border-b-1">
+    <header className="p-4 mb-10 bg-background gap-2 rounded-b-md shadow-lg shadow-violet-200 dark:shadow-violet-900 sticky top-0 z-10">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
           <img src={logo} alt={"App logo"} className={"w-32"} />

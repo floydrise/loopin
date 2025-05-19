@@ -41,7 +41,6 @@ import {
   CalendarIcon,
   Clock,
   Eraser,
-
   MapPin,
   Trash,
 } from "lucide-react";
@@ -66,7 +65,7 @@ import { cn } from "@/lib/utils.ts";
 import { format } from "date-fns";
 import { FieldInfo } from "@/routes/create.tsx";
 import { useForm } from "@tanstack/react-form";
-import { subscriptionMutation } from "@/lib/mutations.tsx";
+import SubscribeButton from "@/components/SubscribeButton.tsx";
 
 const ExperienceCard = ({ event }: { event: eventSelectType }) => {
   const expDefVal: eventUpdateType = {
@@ -110,8 +109,6 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       toast.error("An error occurred: " + error.message);
     },
   });
-
-  const subscribeToExperience = subscriptionMutation(queryClient);
 
   return (
     <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95">
@@ -461,21 +458,11 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
             <Button>View</Button>
           </Link>
           {event.eventPrice == 0 ? (
-            <Button
-              variant={"outline"}
-              onClick={() => {
-                if (!data) {
-                  navigate({ to: "/login" });
-                } else {
-                  subscribeToExperience.mutate({
-                    eventId: event.eventId,
-                    userId: data.user.id,
-                  });
-                }
-              }}
-            >
-              Sign up
-            </Button>
+            <SubscribeButton
+              event={event}
+              queryClient={queryClient}
+              sessionData={data!}
+            />
           ) : (
             <Button
               onClick={() => {
