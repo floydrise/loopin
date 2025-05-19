@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEventByIdQueryOptions } from "@/lib/api.ts";
-import { CalendarIcon, Clock, Mail, Mailbox, MapPin, Tag } from "lucide-react";
+import { CalendarIcon, Clock, MapPin, Tag } from "lucide-react";
 import { format } from "date-fns";
 import {
   Tooltip,
@@ -17,22 +17,15 @@ import {
 import { Button } from "@/components/ui/button.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { useSession } from "@/lib/auth_client.ts";
-import { subscriptionMutation } from "@/lib/mutations.tsx";
 import {
-  EmailShareButton,
   FacebookShareButton,
-  RedditShareButton,
   ThreadsShareButton,
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
-import {
-  FaFacebook,
-  FaReddit,
-  FaThreads,
-  FaWhatsapp,
-  FaXTwitter,
-} from "react-icons/fa6";
+import { FaFacebook, FaThreads, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
+import SubscribeButton from "@/components/SubscribeButton.tsx";
+import type { eventSelectType } from "../../../../server/types.ts";
 
 export const Route = createFileRoute("/experiences/$experienceId")({
   loader: ({ params: { experienceId } }) => {
@@ -49,7 +42,6 @@ function RouteComponent() {
     getEventByIdQueryOptions(experienceId),
   );
   const queryClient = useQueryClient();
-  const subscribeToExperience = subscriptionMutation(queryClient);
   const { pathname } = useLocation();
   console.log(pathname);
   if (isLoading)
@@ -73,7 +65,7 @@ function RouteComponent() {
       </section>
     );
   if (isError) return <p>Error: {error.message}</p>;
-  const event = data?.event;
+  const event = data?.event as eventSelectType;
   return (
     <section className={"flex justify-center items-center flex-col gap-2"}>
       <div className={"max-w-2xl px-2"}>
@@ -200,21 +192,11 @@ function RouteComponent() {
               button.
             </p>
           </span>
-          <Button
-            className={"w-5/6"}
-            onClick={() => {
-              if (!authData) {
-                navigate({ to: "/login" });
-              } else {
-                subscribeToExperience.mutate({
-                  eventId: event.eventId,
-                  userId: authData.user.id,
-                });
-              }
-            }}
-          >
-            Sign Up
-          </Button>
+          <SubscribeButton
+            event={event}
+            queryClient={queryClient}
+            sessionData={authData!}
+          />
         </section>
       ) : (
         <div className={"my-6 w-72"}>

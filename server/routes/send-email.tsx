@@ -3,10 +3,9 @@ import { Resend } from "resend";
 import EmailTemplate from "../emails/email-template";
 import { authMiddleware } from "../auth-middleware";
 
-const app = new Hono();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-app.get("/", authMiddleware, async (c) => {
+const app = new Hono().get("/", authMiddleware, async (c) => {
   const user = c.get("user");
   if (!user) return c.json({ msg: "Not authenticated" }, 400);
   const { data, error } = await resend.emails.send({

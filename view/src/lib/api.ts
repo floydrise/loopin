@@ -90,11 +90,6 @@ export const deleteSubscription = async (id: number) => {
     throw new Error("An error occurred while deleting the subscription");
   return await res.json();
 };
-export const fetchAccessToken = async () => {
-  return await getAccessToken({
-    providerId: "google",
-  });
-};
 export const postToGoogleCalendar = async (
   event: SubscriptionTicketType,
   accessToken: string | undefined,
@@ -139,6 +134,13 @@ export const postToGoogleCalendar = async (
   }
   return await res.json();
 };
+export const sendEmail = async () => {
+  const res = await api.send_email.$get();
+  if (!res.ok) {
+    throw new Error("Could not send email");
+  }
+  return await res.json();
+};
 
 // QueryOptions
 export const getEventsQueryOptions = queryOptions({
@@ -159,7 +161,8 @@ export const getSubscriptionsQueryOptions = queryOptions({
 });
 export const fetchAccessTokenQueryOptions = queryOptions({
   queryKey: ["fetch_access_toke"],
-  queryFn: async () => await getAccessToken({
-    providerId: "google",
-  }),
+  queryFn: async () =>
+    await getAccessToken({
+      providerId: "google",
+    }),
 });

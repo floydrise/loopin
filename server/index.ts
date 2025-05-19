@@ -27,7 +27,7 @@ const app = new Hono()
   })
   .route("/experiences", eventsRoute)
   .route("/subscriptions", subscriptionsRoute)
-  .route("/send-email", sendEmailRoute);
+  .route("/send_email", sendEmailRoute);
 
 export type AppType = typeof app;
 export default app;

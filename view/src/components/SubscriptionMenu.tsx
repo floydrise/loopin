@@ -51,7 +51,6 @@ export function SubscriptionMenu({ event }: { event: SubscriptionTicketType }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data, isFetched } = useQuery(fetchAccessTokenQueryOptions);
-  console.log(data?.data);
 
   if (isDesktop) {
     return (
@@ -115,7 +114,6 @@ function StatusList({
   const queryClient = useQueryClient();
   const deleteSubscription = deleteMutation(queryClient);
   const addToGoogleCalendar = postToGoogleCalendarMutation();
-  console.log(event.eventDescription);
   return (
     <Command>
       <CommandList>

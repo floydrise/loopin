@@ -3,6 +3,7 @@ import {
   deleteSubscription,
   postSubscription,
   postToGoogleCalendar,
+  sendEmail,
 } from "./api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,10 @@ import { Link } from "@tanstack/react-router";
 import { Eye } from "lucide-react";
 import type { SubscriptionTicketType } from "../../../server/types.ts";
 
-export const subscriptionMutation = (queryClient: QueryClient) => {
+export const subscriptionMutation = (
+  queryClient: QueryClient,
+  sendConfirmationEmail: () => void,
+) => {
   return useMutation({
     mutationFn: (userInput: { eventId: number; userId: string }) =>
       postSubscription(userInput.eventId, userInput.userId),
@@ -25,13 +29,13 @@ export const subscriptionMutation = (queryClient: QueryClient) => {
         ),
       });
       queryClient.invalidateQueries({ queryKey: ["fetch_subscriptions"] });
+      sendConfirmationEmail();
     },
     onError: (error) => {
       toast.warning("Warning: " + error.message);
     },
   });
 };
-
 export const deleteMutation = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (id: number) => deleteSubscription(id),
@@ -44,7 +48,6 @@ export const deleteMutation = (queryClient: QueryClient) => {
     },
   });
 };
-
 export const postToGoogleCalendarMutation = () => {
   return useMutation({
     mutationFn: (userInput: {
@@ -56,6 +59,17 @@ export const postToGoogleCalendarMutation = () => {
     },
     onSuccess: () => {
       toast.success("Successfully added experience to calendar");
+    },
+  });
+};
+export const sendEmailMutation = () => {
+  return useMutation({
+    mutationFn: sendEmail,
+    onError: (error) => {
+      toast.error("An error occurred: " + error.message);
+    },
+    onSuccess: () => {
+      toast.success("Confirmation email sent");
     },
   });
 };
