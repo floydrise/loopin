@@ -13,7 +13,7 @@ export default function Header() {
   const { data } = useSession();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
-    <header className="p-4 mb-10 bg-background gap-2 rounded-b-md shadow-lg shadow-violet-200 dark:shadow-violet-900 sticky top-0 z-10">
+    <header className="p-4 mb-10 backdrop-blur-xl bg-background/60 dark:bg-background/60 to-100% gap-2 rounded-b-md border-b sticky top-0 z-10">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
           <img src={logo} alt={"App logo"} className={"w-32"} />
@@ -21,7 +21,7 @@ export default function Header() {
         <div className={"flex gap-4 justify-center items-center"}>
           <div className={"md:flex gap-2 hidden items-center justify-center"}>
             <Button
-              variant={pathname == "/" ? "default" : "ghost"}
+              variant={pathname == "/" ? "outline" : "ghost"}
               className={"hidden md:flex"}
               asChild
             >
@@ -30,7 +30,7 @@ export default function Header() {
               </Link>
             </Button>
             <Button
-              variant={pathname == "/experiences" ? "default" : "ghost"}
+              variant={pathname == "/experiences" ? "outline" : "ghost"}
               asChild
             >
               <Link to="/experiences">
@@ -39,7 +39,7 @@ export default function Header() {
             </Button>
             {data?.user.role == "staff" ? (
               <Button
-                variant={pathname == "/create" ? "default" : "ghost"}
+                variant={pathname == "/create" ? "outline" : "ghost"}
                 asChild
               >
                 <Link to="/create">

@@ -109,9 +109,8 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       toast.error("An error occurred: " + error.message);
     },
   });
-
   return (
-    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95">
+    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg shadow-violet-200 dark:shadow-violet-900 dark:shadow-lg/60">
       <div className="group relative h-48 pt-0 w-full overflow-hidden bg-cover">
         <img
           src={event.eventImg!}
@@ -122,14 +121,14 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       <CardHeader>
         <CardTitle>{event.eventName}</CardTitle>
         <CardDescription className={"flex gap-2"}>
-          <span className={"flex items-center"}>
+          <span className={"flex items-center"} title={"Location"}>
             <MapPin /> <p>{event.eventLocation}</p>
           </span>
-          <span className={"flex items-center"}>
+          <span className={"flex items-center"} title={"Date"}>
             <CalendarIcon />
             <p>{format(event.eventDateStart, "dd/MM/yyyy")}</p>
           </span>
-          <span className={"flex items-center gap-1"}>
+          <span className={"flex items-center gap-1"} title={"Time"}>
             <Clock />
             <p>{event.eventTimeStart}</p>
           </span>

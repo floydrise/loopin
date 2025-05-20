@@ -148,31 +148,38 @@ function RouteComponent() {
         </TooltipProvider>
       </section>
       <div className={"flex gap-4"}>
+
         <FacebookShareButton
           url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
-          htmlTitle={"Facebook share button"}
+          htmlTitle={"Share on Facebook"}
           hashtag={"#attending"}
+          className={"hover:animate-pulse"}
         >
           <FaFacebook className={"size-5"} />
         </FacebookShareButton>
+
         <TwitterShareButton
           url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
-          htmlTitle={"X(Twitter) share button"}
+          htmlTitle={"Share on X(Twitter)"}
           hashtags={["#attending", "#feelinggreat", "#happy", "#event"]}
           title={event?.eventName}
+          className={"hover:animate-pulse"}
         >
           <FaXTwitter className={"size-5 stroke-gray-500"} />
         </TwitterShareButton>
         <ThreadsShareButton
           url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
           title={event?.eventName}
+          className={"hover:animate-pulse"}
+          htmlTitle={"Share on Threads"}
         >
           <FaThreads className={"size-5"} />
         </ThreadsShareButton>
         <WhatsappShareButton
           url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
-          htmlTitle={"WhatsApp share button"}
+          htmlTitle={"Share on WhatsApp"}
           title={event?.eventName}
+          className={"hover:animate-pulse"}
         >
           <FaWhatsapp className={"size-5"} />
         </WhatsappShareButton>

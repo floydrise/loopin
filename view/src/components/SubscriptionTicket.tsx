@@ -16,7 +16,7 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
   return (
     <div
       className={
-        "group flex max-w-md gap-2 border-1 bg-primary-foreground dark:bg-primary-foreground p-3 mx-2 rounded-lg"
+        "group flex max-w-md gap-2 border-1 bg-primary-foreground dark:bg-primary-foreground p-3 mx-2 rounded-lg shadow-lg shadow-violet-200 dark:shadow-violet-900 dark:shadow-lg/40"
       }
     >
       <div className={"group w-56 bg-cover overflow-hidden rounded-sm"}>
@@ -52,18 +52,18 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
           <SubscriptionMenu event={event} />
         </div>
         <span className={"flex items-center text-muted-foreground"}>
-          <MapPin /> <p>{event.eventLocation}</p>
+          <MapPin className={"size-5"} /> <p>{event.eventLocation}</p>
         </span>
         <span className={"flex items-center text-muted-foreground"}>
-          <CalendarIcon />
+          <CalendarIcon className={"size-5"} />
           <p>{format(event.eventDateStart!, "dd/MM/yyyy")}</p>
         </span>
         <span className={"flex text-muted-foreground"}>
-          <Clock />
+          <Clock className={"size-5"} />
           <p>{event.eventTimeStart}</p>
         </span>
         <span className={"flex text-muted-foreground"}>
-          <Tag />
+          <Tag className={"size-5"} />
           <p>{event.eventPrice == 0 ? "Free" : "£" + event.eventPrice}</p>
         </span>
       </div>
