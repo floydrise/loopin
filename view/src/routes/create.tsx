@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { Calendar } from "@/components/ui/calendar.tsx";
-import { cn } from "@/lib/utils";
+import { beforeLoadAuth, cn } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,
@@ -29,6 +29,22 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/create")({
+  beforeLoad: async ({ location }) => {
+    const data = await beforeLoadAuth();
+    if (!data) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+    if (data.user.role !== "staff") {
+      throw redirect({
+        to: "/experiences",
+      });
+    }
+  },
   component: RouteComponent,
 });
 

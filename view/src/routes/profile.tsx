@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useSession } from "@/lib/auth_client.ts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -7,8 +7,20 @@ import { getSubscriptionsQueryOptions } from "@/lib/api.ts";
 import { toast } from "sonner";
 import SubscriptionTicket from "@/components/SubscriptionTicket.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { beforeLoadAuth } from "@/lib/utils.ts";
 
 export const Route = createFileRoute("/profile")({
+  beforeLoad: async ({ location }) => {
+    const data = await beforeLoadAuth();
+    if (!data) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
   component: RouteComponent,
 });
 
@@ -75,10 +87,7 @@ function RouteComponent() {
           </p>
         ) : (
           queryData?.map((event) => (
-            <SubscriptionTicket
-              event={event}
-              key={event.eventId}
-            />
+            <SubscriptionTicket event={event} key={event.eventId} />
           ))
         )}
       </section>
