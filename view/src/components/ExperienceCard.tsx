@@ -110,7 +110,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
     },
   });
   return (
-    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg shadow-violet-200 dark:shadow-violet-900 dark:shadow-lg/60">
+    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg shadow-teal-200 dark:shadow-teal-900 dark:shadow-lg/60">
       <div className="group relative h-48 pt-0 w-full overflow-hidden bg-cover">
         <img
           src={event.eventImg!}
@@ -207,7 +207,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <DialogTrigger asChild>
-                        <Button className={"bg-violet-300 hover:bg-violet-300"}>
+                        <Button className={"bg-teal-500 hover:bg-teal-400"}>
                           <Eraser />
                         </Button>
                       </DialogTrigger>

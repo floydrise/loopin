@@ -92,7 +92,7 @@ function RouteComponent() {
           form.handleSubmit();
         }}
       >
-        <Card className="max-w-xl shadow-lg shadow-violet-200 dark:shadow-violet-900 m-auto">
+        <Card className="max-w-xl shadow-lg shadow-teal-200 dark:shadow-teal-900 m-auto">
           <CardHeader>
             <CardTitle className={"flex items-center gap-2"}>
               <Pen /> Create a new experience
