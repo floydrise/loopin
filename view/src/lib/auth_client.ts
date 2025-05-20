@@ -6,5 +6,5 @@ export const authClient = createAuthClient({
   baseURL: "http://localhost:5173/",
   plugins: [inferAdditionalFields<typeof auth>()],
 });
-export const { signIn, signOut, useSession, getAccessToken } = authClient;
+export const { signIn, signOut, useSession, getAccessToken, getSession } = authClient;
 export type Session = typeof authClient.$Infer.Session;

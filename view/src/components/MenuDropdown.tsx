@@ -29,7 +29,7 @@ export function MenuDropdown() {
       <SheetTrigger className={"mx-2 focus:outline-none md:hidden"}>
         <Menu />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className={""}>
         <SheetHeader>
           <SheetTitle>Navigation menu</SheetTitle>
           <SheetDescription>Choose an item from the list</SheetDescription>
@@ -37,32 +37,35 @@ export function MenuDropdown() {
         <div className={"flex flex-col justify-between h-full"}>
           <div>
             <div
-              className={`flex py-3 mx-2 border-t border-b ${pathname == "/" ? "bg-secondary" : null}`}
+              className={`flex py-3 border-t border-b ${pathname == "/" ? "bg-primary-foreground" : null}`}
               onClick={async () => {
                 setIsOpen(false);
                 await navigate({ to: "/" });
               }}
             >
-              <House /> <p className={"font-semibold"}>Home</p>
+              <House className={"ml-2"} />{" "}
+              <p className={"font-semibold"}>Home</p>
             </div>
             <div
-              className={`flex py-3 mx-2 border-b ${pathname == "/experiences" ? "bg-secondary" : null}`}
+              className={`flex py-3 border-b ${pathname == "/experiences" ? "bg-primary-foreground" : null}`}
               onClick={async () => {
                 setIsOpen(false);
                 await navigate({ to: "/experiences" });
               }}
             >
-              <Telescope /> <p className={"font-semibold"}>Experiences</p>
+              <Telescope className={"ml-2"} />{" "}
+              <p className={"font-semibold"}>Experiences</p>
             </div>
             {data?.user.role == "staff" ? (
               <div
-                className={`flex py-3 mx-2 border-b ${pathname == "/create" ? "bg-secondary" : null}`}
+                className={`flex py-3 border-b ${pathname == "/create" ? "bg-primary-foreground" : null}`}
                 onClick={async () => {
                   setIsOpen(false);
                   await navigate({ to: "/create" });
                 }}
               >
-                <Brush /> <p className={"font-semibold"}>Create</p>
+                <Brush className={"ml-2"} />{" "}
+                <p className={"font-semibold"}>Create</p>
               </div>
             ) : null}
           </div>
@@ -70,16 +73,17 @@ export function MenuDropdown() {
             {data?.user ? (
               <>
                 <div
-                  className={`flex py-3 mx-2 border-b ${pathname == "/profile" ? "bg-secondary" : null}`}
+                  className={`flex py-3 border-b ${pathname == "/profile" ? "bg-primary-foreground" : null}`}
                   onClick={async () => {
                     setIsOpen(false);
                     await navigate({ to: "/profile" });
                   }}
                 >
-                  <User /> <p className={"font-semibold"}>Profile</p>
+                  <User className={"ml-2"} />{" "}
+                  <p className={"font-semibold"}>Profile</p>
                 </div>
                 <div
-                  className={"flex py-3 mx-2"}
+                  className={"flex py-3"}
                   onClick={async () => {
                     setIsOpen(false);
                     await signOut({
@@ -91,18 +95,20 @@ export function MenuDropdown() {
                     });
                   }}
                 >
-                  <LogOut /> <p className={"font-semibold"}>Log out</p>
+                  <LogOut className={"ml-2"} />{" "}
+                  <p className={"font-semibold"}>Log out</p>
                 </div>
               </>
             ) : (
               <div
-                className={`flex py-3 mx-2 border-t ${pathname == "/login" ? "bg-secondary" : null}`}
+                className={`flex py-3 border-t ${pathname == "/login" ? "bg-primary-foreground" : null}`}
                 onClick={async () => {
                   setIsOpen(false);
                   await navigate({ to: "/login" });
                 }}
               >
-                <LogIn /> <p className={"font-semibold"}>Log in</p>
+                <LogIn className={"ml-2"} />{" "}
+                <p className={"font-semibold"}>Log in</p>
               </div>
             )}
           </div>
