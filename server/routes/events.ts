@@ -1,18 +1,45 @@
 import { Hono } from "hono";
 import { db } from "../db";
 import { eventsPostSchema, eventsTable, eventUpdateSchema } from "../db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { authMiddleware } from "../auth-middleware";
+import { object, coerce } from "zod";
 
 const app = new Hono()
-  .get("/", async (c) => {
-    const events = await db
-      .select()
-      .from(eventsTable)
-      .orderBy(desc(eventsTable.createdAt));
-    return c.json({ events });
-  })
+  .get(
+    "/",
+    zValidator(
+      "query",
+      object({
+        page: coerce.number().min(1),
+      }),
+    ),
+    async (c) => {
+      const { page } = c.req.valid("query");
+      const limit = 6;
+      const offset = (page - 1) * limit;
+      const events = await db
+        .select()
+        .from(eventsTable)
+        .orderBy(desc(eventsTable.createdAt))
+        .limit(limit + 1)
+        .offset(offset);
+      const { totalCount } = await db
+        .select({ totalCount: count() })
+        .from(eventsTable)
+        .then((res) => res[0]);
+      const hasNext = events.length > limit;
+      const totalPages = Math.ceil(totalCount / limit);
+      return c.json({
+        events: events.slice(0, limit),
+        page,
+        hasNext,
+        totalCount,
+        totalPages,
+      });
+    },
+  )
   .get("/:id{[0-9]+}", async (c) => {
     const { id } = c.req.param();
     const event = await db
