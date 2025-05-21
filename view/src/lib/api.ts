@@ -13,9 +13,13 @@ import { DateTime } from "luxon";
 const api = hc<AppType>("/").api;
 
 // API actions
-const fetchAllEvents = async () => {
-  const res = await api.experiences.$get();
-  if (!res.ok) throw new Error("An error occurred while fetching the events");
+const fetchAllEvents = async (page: number) => {
+  const res = await api.experiences.$get({
+    query: {
+      page: String(page),
+    },
+  });
+  if (!res.ok) throw new Error("error while fetching the events");
   return await res.json();
 };
 const fetchEventById = async (id: string) => {
@@ -143,11 +147,12 @@ export const sendEmail = async () => {
 };
 
 // QueryOptions
-export const getEventsQueryOptions = queryOptions({
-  queryKey: ["fetch_events"],
-  queryFn: fetchAllEvents,
-  staleTime: 5 * 1000,
-});
+export const getEventsQueryOptions = (page: number) =>
+  queryOptions({
+    queryKey: ["fetch_events", page],
+    queryFn: () => fetchAllEvents(page),
+    staleTime: 5 * 1000 * 60,
+  });
 export const getEventByIdQueryOptions = (eventId: string) => {
   return queryOptions({
     queryKey: ["fetch_event_by_id", eventId],

@@ -5,7 +5,7 @@ import { useSession } from "@/lib/auth_client.ts";
 import { Brush, House, LogIn, Telescope } from "lucide-react";
 import { ProfileDropdown } from "@/components/ProfileDropdown.tsx";
 import { MenuDropdown } from "@/components/MenuDropdown.tsx";
-import logo from "/LoopinTeal.png?url";
+import logo from "/loopin_purple.png?url";
 import { useMediaQuery } from "usehooks-ts";
 
 export default function Header() {
@@ -13,7 +13,7 @@ export default function Header() {
   const { data } = useSession();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
-    <header className="p-4 mb-10 backdrop-blur-xl bg-background/60 dark:bg-background/60 to-100% gap-2 rounded-b-md border-b border-teal-200 dark:border-teal-950 sticky top-0 z-10">
+    <header className="p-4 mb-10 backdrop-blur-xl bg-background/60 dark:bg-background/60 to-100% gap-2 rounded-b-md sticky top-0 z-10">
       <nav className="flex flex-row justify-between items-center gap-4">
         <Link to={"/"}>
           <img src={logo} alt={"App logo"} className={"w-32"} />
