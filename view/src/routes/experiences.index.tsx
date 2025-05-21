@@ -8,6 +8,16 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { fallback, zodValidator } from "@tanstack/zod-adapter";
 import { useEffect } from "react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { paginationRangeAlgorithm } from "@/lib/utils.ts";
 
 const pageSearchSchema = z.object({
   page: fallback(z.number(), 1).default(1),
@@ -38,6 +48,9 @@ function RouteComponent() {
       });
   }, [data, page, navigate]);
 
+  const numOfPages = data?.totalPages;
+  const paginationRange = paginationRangeAlgorithm(page, numOfPages!);
+
   return (
     <>
       <div
@@ -58,6 +71,48 @@ function RouteComponent() {
               />
             ))}
       </div>
+      {numOfPages && numOfPages > 1 && (
+        <Pagination className={"m-auto mb-10"}>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                disabled={page === 1}
+                to={"/experiences"}
+                search={{ page: page - 1 }}
+                className={`${page === 1 && "cursor-not-allowed"}`}
+              />
+            </PaginationItem>
+            {paginationRange.map((val, index) => {
+              if (val === "ellipsis") {
+                return (
+                  <PaginationItem key={index + val}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                );
+              }
+              return (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    to={"/experiences"}
+                    search={{ page: Number(val) }}
+                    isActive={page === val}
+                  >
+                    {val}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+            <PaginationItem>
+              <PaginationNext
+                disabled={!data?.hasNext}
+                to={"/experiences"}
+                search={{ page: page + 1 }}
+                className={`${!data?.hasNext && "cursor-not-allowed"}`}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </>
   );
 }

@@ -19,7 +19,7 @@ const fetchAllEvents = async (page: number) => {
       page: String(page),
     },
   });
-  if (!res.ok) throw new Error("An error occurred while fetching the events");
+  if (!res.ok) throw new Error("error while fetching the events");
   return await res.json();
 };
 const fetchEventById = async (id: string) => {
@@ -151,7 +151,7 @@ export const getEventsQueryOptions = (page: number) =>
   queryOptions({
     queryKey: ["fetch_events", page],
     queryFn: () => fetchAllEvents(page),
-    staleTime: 5 * 1000,
+    staleTime: 5 * 1000 * 60,
   });
 export const getEventByIdQueryOptions = (eventId: string) => {
   return queryOptions({
