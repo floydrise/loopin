@@ -110,7 +110,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
     },
   });
   return (
-    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg shadow-violet-200 dark:shadow-violet-900 dark:shadow-lg/70">
+    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg transition duration-1000 hover:shadow-violet-200 hover:dark:shadow-violet-900 dark:shadow-lg">
       <div className="group relative h-48 pt-0 w-full overflow-hidden bg-cover">
         <img
           src={event.eventImg!}

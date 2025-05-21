@@ -52,7 +52,7 @@ function Button({
       data-slot="button"
       className={cn(
         buttonVariants({ variant, size, className }),
-        "hover:cursor-pointer",
+        "hover:cursor-pointer transition delay-100 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105",
       )}
       {...props}
     />
