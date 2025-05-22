@@ -12,6 +12,8 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
+import { Route as PaymentSuccessImport } from './routes/paymentSuccess'
+import { Route as PaymentCancelImport } from './routes/paymentCancel'
 import { Route as LoginImport } from './routes/login'
 import { Route as CreateImport } from './routes/create'
 import { Route as IndexImport } from './routes/index'
@@ -23,6 +25,18 @@ import { Route as ExperiencesExperienceIdImport } from './routes/experiences/$ex
 const ProfileRoute = ProfileImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PaymentSuccessRoute = PaymentSuccessImport.update({
+  id: '/paymentSuccess',
+  path: '/paymentSuccess',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PaymentCancelRoute = PaymentCancelImport.update({
+  id: '/paymentCancel',
+  path: '/paymentCancel',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -81,6 +95,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/paymentCancel': {
+      id: '/paymentCancel'
+      path: '/paymentCancel'
+      fullPath: '/paymentCancel'
+      preLoaderRoute: typeof PaymentCancelImport
+      parentRoute: typeof rootRoute
+    }
+    '/paymentSuccess': {
+      id: '/paymentSuccess'
+      path: '/paymentSuccess'
+      fullPath: '/paymentSuccess'
+      preLoaderRoute: typeof PaymentSuccessImport
+      parentRoute: typeof rootRoute
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -111,6 +139,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/login': typeof LoginRoute
+  '/paymentCancel': typeof PaymentCancelRoute
+  '/paymentSuccess': typeof PaymentSuccessRoute
   '/profile': typeof ProfileRoute
   '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
   '/experiences': typeof ExperiencesIndexRoute
@@ -120,6 +150,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/login': typeof LoginRoute
+  '/paymentCancel': typeof PaymentCancelRoute
+  '/paymentSuccess': typeof PaymentSuccessRoute
   '/profile': typeof ProfileRoute
   '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
   '/experiences': typeof ExperiencesIndexRoute
@@ -130,6 +162,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/login': typeof LoginRoute
+  '/paymentCancel': typeof PaymentCancelRoute
+  '/paymentSuccess': typeof PaymentSuccessRoute
   '/profile': typeof ProfileRoute
   '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
   '/experiences/': typeof ExperiencesIndexRoute
@@ -141,6 +175,8 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/login'
+    | '/paymentCancel'
+    | '/paymentSuccess'
     | '/profile'
     | '/experiences/$experienceId'
     | '/experiences'
@@ -149,6 +185,8 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/login'
+    | '/paymentCancel'
+    | '/paymentSuccess'
     | '/profile'
     | '/experiences/$experienceId'
     | '/experiences'
@@ -157,6 +195,8 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/login'
+    | '/paymentCancel'
+    | '/paymentSuccess'
     | '/profile'
     | '/experiences/$experienceId'
     | '/experiences/'
@@ -167,6 +207,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
   LoginRoute: typeof LoginRoute
+  PaymentCancelRoute: typeof PaymentCancelRoute
+  PaymentSuccessRoute: typeof PaymentSuccessRoute
   ProfileRoute: typeof ProfileRoute
   ExperiencesExperienceIdRoute: typeof ExperiencesExperienceIdRoute
   ExperiencesIndexRoute: typeof ExperiencesIndexRoute
@@ -176,6 +218,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
   LoginRoute: LoginRoute,
+  PaymentCancelRoute: PaymentCancelRoute,
+  PaymentSuccessRoute: PaymentSuccessRoute,
   ProfileRoute: ProfileRoute,
   ExperiencesExperienceIdRoute: ExperiencesExperienceIdRoute,
   ExperiencesIndexRoute: ExperiencesIndexRoute,
@@ -194,6 +238,8 @@ export const routeTree = rootRoute
         "/",
         "/create",
         "/login",
+        "/paymentCancel",
+        "/paymentSuccess",
         "/profile",
         "/experiences/$experienceId",
         "/experiences/"
@@ -207,6 +253,12 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/paymentCancel": {
+      "filePath": "paymentCancel.tsx"
+    },
+    "/paymentSuccess": {
+      "filePath": "paymentSuccess.tsx"
     },
     "/profile": {
       "filePath": "profile.tsx"

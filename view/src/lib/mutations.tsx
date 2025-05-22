@@ -1,5 +1,6 @@
 import { type QueryClient, useMutation } from "@tanstack/react-query";
 import {
+  createStripeSession,
   deleteSubscription,
   postSubscription,
   postToGoogleCalendar,
@@ -9,7 +10,10 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Eye } from "lucide-react";
-import type { SubscriptionTicketType } from "../../../server/types.ts";
+import type {
+  StripeInsertType,
+  SubscriptionTicketType,
+} from "../../../server/types.ts";
 
 export const subscriptionMutation = (
   queryClient: QueryClient,
@@ -70,6 +74,15 @@ export const sendEmailMutation = () => {
     },
     onSuccess: () => {
       toast.success("Confirmation email sent");
+    },
+  });
+};
+
+export const createStripeSessionMutation = () => {
+  return useMutation({
+    mutationFn: (event: StripeInsertType) => createStripeSession(event),
+    onError: (error) => {
+      toast.error("An error occurred: " + error.message);
     },
   });
 };

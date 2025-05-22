@@ -19,6 +19,7 @@
     "@radix-ui/react-separator": "^1.1.6",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.6",
+    "@stripe/stripe-js": "^7.3.0",
     "@tabler/icons-react": "^3.33.0",
     "@tailwindcss/vite": "^4.1.7",
     "@tanstack/react-form": "^1.11.1",
