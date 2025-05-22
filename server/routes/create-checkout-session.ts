@@ -31,7 +31,7 @@ const app = new Hono().post(
         ],
         mode: "payment",
         currency: "gbp",
-        payment_method_types: ["card", "paypal"],
+        payment_method_types: ["card", "paypal", "amazon_pay"],
         customer_email: user?.email,
         success_url: "http://localhost:5173/paymentSuccess",
         cancel_url: "http://localhost:5173/paymentCancel",

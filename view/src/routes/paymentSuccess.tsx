@@ -1,9 +1,48 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from "@tanstack/react-router";
+import dollarImg from "/dollar.png";
+import { Button } from "@/components/ui/button.tsx";
+import { Binoculars } from "lucide-react";
+import { useWindowSize } from "usehooks-ts";
+import Confetti from "react-confetti";
 
-export const Route = createFileRoute('/paymentSuccess')({
+export const Route = createFileRoute("/paymentSuccess")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div className={"mt-30"}>Hello "/paymentSuccess"!</div>
+  const { width, height } = useWindowSize();
+  return (
+    <>
+      <Confetti
+        width={width}
+        height={height}
+        numberOfPieces={200}
+        recycle={false}
+      />
+      <section className={"h-screen w-screen flex justify-center items-center"}>
+        <div
+          className={
+            "border p-20 rounded-lg flex flex-col justify-center items-center bg-slate-50 dark:bg-primary-foreground gap-4 "
+          }
+        >
+          <img
+            src={dollarImg}
+            alt={"Image of the dollar sign"}
+            className={"size-20"}
+          />
+          <div>
+            <h1 className={"text-4xl font-bold"}>Payment Successful</h1>
+            <p className={"text-xl text-muted-foreground text-center"}>
+              Thank you for your purchase
+            </p>
+          </div>
+          <Link to={"/experiences"}>
+            <Button>
+              <Binoculars /> Continue exploring
+            </Button>
+          </Link>
+        </div>
+      </section>
+    </>
+  );
 }
