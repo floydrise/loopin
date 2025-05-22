@@ -22,7 +22,7 @@ const SubscribeButton = ({
   return (
     <Button
       variant={"outline"}
-      onClick={ () => {
+      onClick={() => {
         if (!sessionData) {
           navigate({ to: "/login" });
         } else {
@@ -32,6 +32,9 @@ const SubscribeButton = ({
           });
         }
       }}
+      className={
+        "group transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
+      }
     >
       Sign up
     </Button>

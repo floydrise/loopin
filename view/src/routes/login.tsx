@@ -21,7 +21,7 @@ export const Route = createFileRoute("/login")({
 function RouteComponent() {
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <section className={"m-auto px-2 max-w-sm md:max-w-md"}>
+    <section className={"m-auto px-2 max-w-sm md:max-w-md mt-40"}>
       <Card>
         <CardHeader>
           <CardTitle

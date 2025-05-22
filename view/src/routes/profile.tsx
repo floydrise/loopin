@@ -39,7 +39,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className={"md:mx-30"}>
+    <div className={"md:mx-30 mt-30"}>
       <h1 className={"text-2xl font-bold ml-4"}>My profile:</h1>
       <div className={"flex ml-8 items-center gap-1 my-6"}>
         <Avatar className={"size-14 border border-black"}>

@@ -16,7 +16,7 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
   return (
     <div
       className={
-        "group flex max-w-md gap-2 border-1 bg-primary-foreground dark:bg-primary-foreground p-3 mx-2 rounded-lg shadow-lg shadow-violet-300 dark:shadow-violet-900 dark:shadow-lg/50"
+        "group flex max-w-md gap-2 border-1 bg-primary-foreground dark:bg-primary-foreground p-3 mx-2 rounded-lg transition-shadow duration-1000 shadow-lg hover:shadow-violet-400 hover:dark:shadow-violet-900"
       }
     >
       <div className={"group w-56 bg-cover overflow-hidden rounded-sm"}>

@@ -46,7 +46,7 @@ function RouteComponent() {
   console.log(pathname);
   if (isLoading)
     return (
-      <section className={"flex justify-center items-center flex-col gap-2"}>
+      <section className={"flex justify-center items-center flex-col gap-2 mt-30"}>
         <div className={"max-w-2xl px-2"}>
           <Skeleton className={"w-80 h-80 sm:w-140 sm:h-100"} />
         </div>
@@ -67,7 +67,7 @@ function RouteComponent() {
   if (isError) return <p>Error: {error.message}</p>;
   const event = data?.event as eventSelectType;
   return (
-    <section className={"flex justify-center items-center flex-col gap-2"}>
+    <section className={"flex justify-center items-center flex-col gap-2 mt-30"}>
       <div className={"max-w-2xl px-2"}>
         <img
           src={event?.eventImg!}

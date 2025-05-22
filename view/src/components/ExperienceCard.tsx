@@ -110,7 +110,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
     },
   });
   return (
-    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg transition duration-1000 hover:shadow-violet-200 hover:dark:shadow-violet-900 dark:shadow-lg">
+    <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg transition-shadow duration-1000 hover:shadow-violet-400 hover:dark:shadow-violet-900 dark:shadow-lg">
       <div className="group relative h-48 pt-0 w-full overflow-hidden bg-cover">
         <img
           src={event.eventImg!}
@@ -166,7 +166,12 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <AlertDialogTrigger asChild>
-                        <Button variant={"destructive"}>
+                        <Button
+                          variant={"destructive"}
+                          className={
+                            "transition-discrete duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
+                          }
+                        >
                           <Trash />
                         </Button>
                       </AlertDialogTrigger>
@@ -207,7 +212,11 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <DialogTrigger asChild>
-                        <Button className={"bg-violet-300 hover:bg-violet-300"}>
+                        <Button
+                          className={
+                            "bg-violet-300 hover:bg-violet-300 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
+                          }
+                        >
                           <Eraser />
                         </Button>
                       </DialogTrigger>
@@ -439,7 +448,9 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                         <Button
                           type={"submit"}
                           disabled={!canSubmit}
-                          className={"w-full mt-6"}
+                          className={
+                            "w-full mt-6 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
+                          }
                         >
                           {isSubmitting ? "..." : "Save changes"}
                         </Button>
@@ -454,7 +465,13 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
             to={"/experiences/$experienceId"}
             params={{ experienceId: String(event.eventId) }}
           >
-            <Button>View</Button>
+            <Button
+              className={
+                "transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
+              }
+            >
+              View
+            </Button>
           </Link>
           {event.eventPrice == 0 ? (
             <SubscribeButton
@@ -468,6 +485,9 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                 if (!data?.session) navigate({ to: "/login" });
               }}
               variant={"outline"}
+              className={
+                "transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
+              }
             >
               Buy
             </Button>

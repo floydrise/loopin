@@ -55,7 +55,7 @@ function RouteComponent() {
     <>
       <div
         className={
-          "grid grid-cols-1 md:grid-cols-3 gap-y-8 mb-10 justify-items-center"
+          "grid grid-cols-1 md:grid-cols-3 gap-y-8 mb-10 justify-items-center mt-30"
         }
       >
         {isLoading

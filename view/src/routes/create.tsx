@@ -84,7 +84,7 @@ function RouteComponent() {
     },
   });
   return (
-    <section className={"mb-10 px-6"}>
+    <section className={"mb-10 px-6 mt-30"}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -92,7 +92,7 @@ function RouteComponent() {
           form.handleSubmit();
         }}
       >
-        <Card className="max-w-xl transition duration-1000 shadow-lg hover:shadow-violet-300 hover:dark:shadow-violet-900 m-auto">
+        <Card className="max-w-xl transition duration-1000 shadow-lg hover:shadow-violet-400 hover:dark:shadow-violet-900 m-auto">
           <CardHeader>
             <CardTitle className={"flex items-center gap-2"}>
               <Pen /> Create a new experience
@@ -296,7 +296,9 @@ function RouteComponent() {
                 form.reset();
               }}
               variant={"outline"}
-              className={"w-1/2"}
+              className={
+                "w-1/2 transition duration-300 ease-in-out hover:-translate-y-1 hover:-translate-x-1 hover:scale-105"
+              }
             >
               Reset
             </Button>
@@ -306,7 +308,9 @@ function RouteComponent() {
                 <Button
                   type={"submit"}
                   disabled={!canSubmit}
-                  className={"w-1/2"}
+                  className={
+                    "w-1/2 transition duration-300 ease-in-out hover:-translate-y-1 hover:translate-x-1 hover:scale-105"
+                  }
                 >
                   {isSubmitting ? "..." : "Submit"}
                 </Button>
