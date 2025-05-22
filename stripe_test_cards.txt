@@ -1,0 +1,3 @@
+Payment succeeds: 4242424242424242
+Payment requires authentication: 4000002500003155
+Payment is declined: 4000000000009995

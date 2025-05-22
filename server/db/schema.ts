@@ -11,10 +11,11 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 import {
-  createInsertSchema,
+  createInsertSchema, createSchemaFactory,
   createSelectSchema,
-  createUpdateSchema,
+  createUpdateSchema
 } from "drizzle-zod";
+import { z } from "zod";
 
 // Drizzle schemas 👇🏻
 export const eventsTable = pgTable("events", {
@@ -140,3 +141,8 @@ export const eventSelectSchema = createSelectSchema(eventsTable);
 
 export const eventUserSelectSchema = createSelectSchema(eventUserTable);
 export const eventUserPostSchema = createInsertSchema(eventUserTable);
+export const stripeInsertSchema = eventsPostSchema.pick({
+  eventName: true,
+  eventPrice: true,
+  eventImg: true
+})

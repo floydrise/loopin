@@ -3,12 +3,13 @@ import type { AppType } from "../../../server";
 import { hc } from "hono/client";
 import type {
   eventInsertType,
-  eventUpdateType,
-  SubscriptionTicketType,
+  eventUpdateType, StripeInsertType,
+  SubscriptionTicketType
 } from "../../../server/types.ts";
 import { toast } from "sonner";
 import { getAccessToken } from "@/lib/auth_client.ts";
 import { DateTime } from "luxon";
+import { loadStripe } from "@stripe/stripe-js";
 
 const api = hc<AppType>("/").api;
 
@@ -144,6 +145,20 @@ export const sendEmail = async () => {
     throw new Error("Could not send email");
   }
   return await res.json();
+};
+export const createStripeSession = async (event: StripeInsertType) => {
+  const stripe = await loadStripe(
+    "pk_test_51RRVWoP1zF4zmeYHG95nIzYEt9X9Z6f8BZcL6y4ZmiHfd7PRRgwnawL1Td0rKe70Q0pQvuss1QxBppI2tZXC1Lnt00QJsWsENr",
+  );
+  const res = await api.create_checkout_session.$post({
+    json: event,
+  });
+  if (!res.ok) throw new Error("error while creating payment session");
+  const stripeSession = await res.json();
+  const result = await stripe?.redirectToCheckout({
+    sessionId: stripeSession.id,
+  });
+  if (result?.error) throw new Error(result.error.message);
 };
 
 // QueryOptions

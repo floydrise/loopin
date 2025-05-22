@@ -66,6 +66,7 @@ import { format } from "date-fns";
 import { FieldInfo } from "@/routes/create.tsx";
 import { useForm } from "@tanstack/react-form";
 import SubscribeButton from "@/components/SubscribeButton.tsx";
+import { createStripeSessionMutation } from "@/lib/mutations.tsx";
 
 const ExperienceCard = ({ event }: { event: eventSelectType }) => {
   const expDefVal: eventUpdateType = {
@@ -109,6 +110,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
       toast.error("An error occurred: " + error.message);
     },
   });
+  const stripeMutation = createStripeSessionMutation();
   return (
     <Card className="group w-full max-w-md overflow-hidden pt-0 scale-95 shadow-lg transition-shadow duration-1000 hover:shadow-violet-400 hover:dark:shadow-violet-900 dark:shadow-lg">
       <div className="group relative h-48 pt-0 w-full overflow-hidden bg-cover">
@@ -483,6 +485,11 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
             <Button
               onClick={() => {
                 if (!data?.session) navigate({ to: "/login" });
+                stripeMutation.mutate({
+                  eventName: event.eventName,
+                  eventPrice: event.eventPrice,
+                  eventImg: event.eventImg,
+                });
               }}
               variant={"outline"}
               className={
