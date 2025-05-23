@@ -3,8 +3,9 @@ import type { AppType } from "../../../server";
 import { hc } from "hono/client";
 import type {
   eventInsertType,
-  eventUpdateType, StripeInsertType,
-  SubscriptionTicketType
+  eventUpdateType,
+  StripeInsertType,
+  SubscriptionTicketType,
 } from "../../../server/types.ts";
 import { toast } from "sonner";
 import { getAccessToken } from "@/lib/auth_client.ts";

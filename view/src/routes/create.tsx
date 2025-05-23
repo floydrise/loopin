@@ -92,7 +92,7 @@ function RouteComponent() {
           form.handleSubmit();
         }}
       >
-        <Card className="max-w-xl transition duration-1000 shadow-lg hover:shadow-violet-400 hover:dark:shadow-violet-900 m-auto">
+        <Card className="max-w-4xl transition duration-1000 shadow-lg hover:shadow-violet-400 hover:dark:shadow-violet-900 m-auto">
           <CardHeader>
             <CardTitle className={"flex items-center gap-2"}>
               <Pen /> Create a new experience
@@ -103,166 +103,171 @@ function RouteComponent() {
           </CardHeader>
           <Separator />
           <CardContent>
-            <div className="grid w-full items-center gap-4">
-              <form.Field
-                name={"eventName"}
-                validators={{
-                  onChange: eventsPostSchema.shape.eventName,
-                }}
-                children={(field) => (
-                  <>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor={field.name}>Name:</Label>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="e.g. 'Download'"
-                      />
-                    </div>
-                    <FieldInfo field={field} />
-                  </>
-                )}
-              />
-              <form.Field
-                name={"eventDescription"}
-                validators={{
-                  onChange: eventsPostSchema.shape.eventDescription,
-                }}
-                children={(field) => (
-                  <>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor={field.name}>Name:</Label>
-                      <Textarea
-                        rows={10}
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value ?? ""}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="e.g. 'Best rock fest'"
-                      />
-                    </div>
-                    <FieldInfo field={field} />
-                  </>
-                )}
-              />
-              <form.Field
-                name={"eventImg"}
-                validators={{
-                  onChange: eventsPostSchema.shape.eventImg,
-                }}
-                children={(field) => (
-                  <>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor={field.name}>Image URL (optional):</Label>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value ?? ""}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="https://www.example.com/"
-                      />
-                    </div>
-                    <FieldInfo field={field} />
-                  </>
-                )}
-              />
-              <form.Field
-                name={"eventPrice"}
-                validators={{
-                  onChange: eventsPostSchema.shape.eventPrice,
-                }}
-                children={(field) => (
-                  <>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor={field.name}>Price (in £):</Label>
-                      <Input
-                        type={"number"}
-                        min={"0"}
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(Number(e.target.value))
-                        }
-                        placeholder="e.g. 100"
-                      />
-                    </div>
-                    <FieldInfo field={field} />
-                  </>
-                )}
-              />
-              <form.Field
-                name={"eventLocation"}
-                validators={{
-                  onChange: eventsPostSchema.shape.eventLocation,
-                }}
-                children={(field) => (
-                  <>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor={field.name}>Location:</Label>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="e.g. 'London'"
-                      />
-                    </div>
-                    <FieldInfo field={field} />
-                  </>
-                )}
-              />
-              <form.Field
-                name={"eventDateStart"}
-                validators={{
-                  onChange: eventsPostSchema.shape.eventDateStart,
-                }}
-                children={(field) => (
-                  <>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor={field.name}>Date:</Label>
-                      <Popover>
-                        <PopoverTrigger asChild id={field.name}>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] justify-start text-left font-normal",
-                              !field.state.value && "text-muted-foreground",
-                            )}
-                          >
-                            <CalendarIcon />
-                            {field.state.value ? (
-                              format(field.state.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={new Date(field.state.value)}
-                            onSelect={(date) =>
-                              field.handleChange(
-                                format(date ?? new Date(), "yyyy-MM-dd"),
-                              )
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                    <FieldInfo field={field} />
-                  </>
-                )}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full  gap-4">
+              <div className={"flex flex-col gap-4"}>
+                <form.Field
+                  name={"eventName"}
+                  validators={{
+                    onChange: eventsPostSchema.shape.eventName,
+                  }}
+                  children={(field) => (
+                    <>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor={field.name}>Name:</Label>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          placeholder="e.g. 'Download'"
+                        />
+                      </div>
+                      <FieldInfo field={field} />
+                    </>
+                  )}
+                />
+                <form.Field
+                  name={"eventDescription"}
+                  validators={{
+                    onChange: eventsPostSchema.shape.eventDescription,
+                  }}
+                  children={(field) => (
+                    <>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor={field.name}>Name:</Label>
+                        <Textarea
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value ?? ""}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          placeholder="e.g. 'Best rock fest'"
+                        />
+                      </div>
+                      <FieldInfo field={field} />
+                    </>
+                  )}
+                />
+                <form.Field
+                  name={"eventImg"}
+                  validators={{
+                    onChange: eventsPostSchema.shape.eventImg,
+                  }}
+                  children={(field) => (
+                    <>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor={field.name}>
+                          Image URL (optional):
+                        </Label>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value ?? ""}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          placeholder="https://www.example.com/"
+                        />
+                      </div>
+                      <FieldInfo field={field} />
+                    </>
+                  )}
+                />
+              </div>
+              <div className={"flex flex-col gap-4"}>
+                <form.Field
+                  name={"eventPrice"}
+                  validators={{
+                    onChange: eventsPostSchema.shape.eventPrice,
+                  }}
+                  children={(field) => (
+                    <>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor={field.name}>Price (in £):</Label>
+                        <Input
+                          type={"number"}
+                          min={"0"}
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) =>
+                            field.handleChange(Number(e.target.value))
+                          }
+                          placeholder="e.g. 100"
+                        />
+                      </div>
+                      <FieldInfo field={field} />
+                    </>
+                  )}
+                />
+                <form.Field
+                  name={"eventLocation"}
+                  validators={{
+                    onChange: eventsPostSchema.shape.eventLocation,
+                  }}
+                  children={(field) => (
+                    <>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor={field.name}>Location:</Label>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          placeholder="e.g. 'London'"
+                        />
+                      </div>
+                      <FieldInfo field={field} />
+                    </>
+                  )}
+                />
+                <form.Field
+                  name={"eventDateStart"}
+                  validators={{
+                    onChange: eventsPostSchema.shape.eventDateStart,
+                  }}
+                  children={(field) => (
+                    <>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor={field.name}>Date:</Label>
+                        <Popover>
+                          <PopoverTrigger asChild id={field.name}>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] justify-start text-left font-normal",
+                                !field.state.value && "text-muted-foreground",
+                              )}
+                            >
+                              <CalendarIcon />
+                              {field.state.value ? (
+                                format(field.state.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={new Date(field.state.value)}
+                              onSelect={(date) =>
+                                field.handleChange(
+                                  format(date ?? new Date(), "yyyy-MM-dd"),
+                                )
+                              }
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      <FieldInfo field={field} />
+                    </>
+                  )}
+                />
+              </div>
               <form.Field
                 name={"eventTimeStart"}
                 validators={{
@@ -297,7 +302,7 @@ function RouteComponent() {
               }}
               variant={"outline"}
               className={
-                "w-1/2 transition duration-300 ease-in-out hover:-translate-y-1 hover:-translate-x-1 hover:scale-105"
+                "md:w-2/5 w-1/2 transition duration-300 ease-in-out hover:-translate-y-1 hover:-translate-x-1 hover:scale-105"
               }
             >
               Reset
@@ -309,7 +314,7 @@ function RouteComponent() {
                   type={"submit"}
                   disabled={!canSubmit}
                   className={
-                    "w-1/2 transition duration-300 ease-in-out hover:-translate-y-1 hover:translate-x-1 hover:scale-105"
+                    "md:w-2/5 w-1/2 transition duration-300 ease-in-out hover:-translate-y-1 hover:translate-x-1 hover:scale-105"
                   }
                 >
                   {isSubmitting ? "..." : "Submit"}
