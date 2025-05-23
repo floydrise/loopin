@@ -7,7 +7,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
+import { Link, type LinkComponentProps } from "@tanstack/react-router";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -42,15 +42,15 @@ type PaginationLinkProps = {
   isActive?: boolean;
   to: string;
   disabled?: boolean;
-  search?: { page: number };
+
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">;
+  React.ComponentProps<"a"> & LinkComponentProps;
 
 function PaginationLink({
   className,
   isActive,
   to,
-  search,
+
   disabled,
   size = "icon",
   ...props
@@ -58,7 +58,6 @@ function PaginationLink({
   return (
     <Link
       to={to}
-      search={search}
       disabled={disabled}
       aria-current={isActive ? "page" : undefined}
       data-slot="pagination-link"

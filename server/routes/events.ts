@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import { db } from "../db";
 import { eventsPostSchema, eventsTable, eventUpdateSchema } from "../db/schema";
-import { count, desc, eq } from "drizzle-orm";
+import { count, desc, eq, ilike } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { authMiddleware } from "../auth-middleware";
-import { object, coerce } from "zod";
+import { object, coerce, string } from "zod";
 
 const app = new Hono()
   .get(
@@ -13,21 +13,24 @@ const app = new Hono()
       "query",
       object({
         page: coerce.number().min(1),
+        search: string().optional(),
       }),
     ),
     async (c) => {
-      const { page } = c.req.valid("query");
+      const { page, search } = c.req.valid("query");
       const limit = 6;
       const offset = (page - 1) * limit;
       const events = await db
         .select()
         .from(eventsTable)
+        .where(search ? ilike(eventsTable.eventName, search) : undefined)
         .orderBy(desc(eventsTable.createdAt))
         .limit(limit + 1)
         .offset(offset);
       const { totalCount } = await db
         .select({ totalCount: count() })
         .from(eventsTable)
+        .where(search ? ilike(eventsTable.eventName, search) : undefined)
         .then((res) => res[0]);
       const hasNext = events.length > limit;
       const totalPages = Math.ceil(totalCount / limit);
