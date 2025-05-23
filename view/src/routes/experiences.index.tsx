@@ -76,7 +76,7 @@ function RouteComponent() {
           e.preventDefault();
           form.handleSubmit();
         }}
-        className={"max-w-xl w-3/4 mx-auto mb-10"}
+        className={"max-w-xl w-4/5 mx-auto mb-10"}
       >
         <form.Field
           name={"searchVal"}
