@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { db } from "../db";
 import { eventsPostSchema, eventsTable, eventUpdateSchema } from "../db/schema";
-import { count, desc, eq, ilike } from "drizzle-orm";
+import { count, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { authMiddleware } from "../auth-middleware";
 import { object, coerce, string } from "zod";
@@ -18,19 +18,33 @@ const app = new Hono()
     ),
     async (c) => {
       const { page, search } = c.req.valid("query");
+      const trimmedSearch = search?.trim();
+
+      const whereClause =
+        trimmedSearch && trimmedSearch !== ""
+          ? or(
+              sql`to_tsvector
+              ('english', ${eventsTable.eventName})
+              @@ plainto_tsquery('english',
+              ${trimmedSearch}
+              )`,
+              ilike(eventsTable.eventName, `%${trimmedSearch}%`),
+            )
+          : undefined;
+
       const limit = 6;
       const offset = (page - 1) * limit;
       const events = await db
         .select()
         .from(eventsTable)
-        .where(search ? ilike(eventsTable.eventName, search) : undefined)
+        .where(whereClause)
         .orderBy(desc(eventsTable.createdAt))
         .limit(limit + 1)
         .offset(offset);
       const { totalCount } = await db
         .select({ totalCount: count() })
         .from(eventsTable)
-        .where(search ? ilike(eventsTable.eventName, search) : undefined)
+        .where(whereClause)
         .then((res) => res[0]);
       const hasNext = events.length > limit;
       const totalPages = Math.ceil(totalCount / limit);
