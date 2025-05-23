@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import ExperienceCard from "@/components/ExperienceCard.tsx";
 import type { eventSelectType } from "../../../server/types.ts";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { lazy, Suspense} from "react";
+import { lazy, Suspense } from "react";
 
 const Testimonials = lazy(() => import("../components/Testimonials.tsx"));
 
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
 
 function App() {
   const { isLoading, isError, data, error } = useQuery(
-    getEventsQueryOptions(1),
+    getEventsQueryOptions(1, ""),
   );
   if (isError) {
     toast.error("An error occurred: " + error);
@@ -127,7 +127,9 @@ function App() {
             </Link>
           </motion.div>
         </div>
-        <div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}>
+        <div
+          className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2"}
+        >
           {isLoading
             ? new Array(6)
                 .fill(null)
@@ -135,9 +137,10 @@ function App() {
                   <Skeleton key={index} className={"w-100 h-100"} />
                 ))
             : events?.map((event) => (
-                <div key={event.eventId}>
-                  <ExperienceCard event={event as eventSelectType} />
-                </div>
+                <ExperienceCard
+                  key={event.eventId}
+                  event={event as eventSelectType}
+                />
               ))}
         </div>
       </section>
@@ -233,7 +236,7 @@ function App() {
           className={"text-2xl lg:text-4xl flex items-center gap-2"}
         >
           <img src={talkingImg} alt={"Image of a pin"} className={"size-10"} />
-         Check what others have to say
+          Check what others have to say
         </motion.h1>
         <Suspense
           fallback={
@@ -250,7 +253,11 @@ function App() {
           </motion.div>
         </Suspense>
       </section>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" className={"rotate-180"}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1000 100"
+        className={"rotate-180"}
+      >
         <g fill="#a684ff">
           <path
             d="M0 0v99.7C62 69 122.4 48.7 205 66c83.8 17.6 160.5 20.4 240-12 54-22 110-26 173-10a392.2 392.2 0 0 0 222-5c55-17 110.3-36.9 160-27.2V0H0Z"
@@ -259,7 +266,11 @@ function App() {
           <path d="M0 0v74.7C62 44 122.4 28.7 205 46c83.8 17.6 160.5 25.4 240-7 54-22 110-21 173-5 76.5 19.4 146.5 23.3 222 0 55-17 110.3-31.9 160-22.2V0H0Z"></path>
         </g>
       </svg>
-      <section className={"h-20 bg-violet-400 flex justify-center items-center"}>Copyright © Stefan Petrov 2025</section>
+      <section
+        className={"h-20 bg-violet-400 flex justify-center items-center"}
+      >
+        Copyright © Stefan Petrov 2025
+      </section>
     </>
   );
 }

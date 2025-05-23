@@ -1,6 +1,7 @@
 import {
   boolean,
   date,
+  index,
   integer,
   pgTable,
   primaryKey,
@@ -11,26 +12,37 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 import {
-  createInsertSchema, createSchemaFactory,
+  createInsertSchema,
   createSelectSchema,
-  createUpdateSchema
+  createUpdateSchema,
 } from "drizzle-zod";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 
 // Drizzle schemas 👇🏻
-export const eventsTable = pgTable("events", {
-  eventId: serial("event_id").primaryKey(),
-  eventName: text("event_name").notNull(),
-  eventDescription: text("event_description"),
-  eventImg: text("event_imgUrl").default(
-    "https://saffronweddingstyle.com/wp-content/uploads/2023/08/corporate-event-planning.jpg",
-  ),
-  eventPrice: integer("event_price").notNull().default(1),
-  eventLocation: text("event_location").notNull(),
-  eventDateStart: date("event_date_start").notNull(),
-  eventTimeStart: time("event_time_start").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
+export const eventsTable = pgTable(
+  "events",
+  {
+    eventId: serial("event_id").primaryKey(),
+    eventName: text("event_name").notNull(),
+    eventDescription: text("event_description"),
+    eventImg: text("event_imgUrl").default(
+      "https://saffronweddingstyle.com/wp-content/uploads/2023/08/corporate-event-planning.jpg",
+    ),
+    eventPrice: integer("event_price").notNull().default(1),
+    eventLocation: text("event_location").notNull(),
+    eventDateStart: date("event_date_start").notNull(),
+    eventTimeStart: time("event_time_start").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => [
+    index("eventName_search_index").using(
+      "gin",
+      sql`to_tsvector
+        ('english', ${table.eventName})`,
+    ),
+  ],
+);
 
 export const eventUserTable = pgTable(
   "event_user",
@@ -144,5 +156,5 @@ export const eventUserPostSchema = createInsertSchema(eventUserTable);
 export const stripeInsertSchema = eventsPostSchema.pick({
   eventName: true,
   eventPrice: true,
-  eventImg: true
-})
+  eventImg: true,
+});

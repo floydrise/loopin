@@ -29,12 +29,22 @@ function RouteComponent() {
           </p>
         </div>
         <div className={"flex flex-col md:flex-row items-center gap-4"}>
-          <Link to={"/experiences"}>
+          <Link
+            to={"/experiences"}
+            className={
+              "transition ease-in-out duration-300 hover:-translate-y-1 hover:-translate-x-1 hover:scale-105"
+            }
+          >
             <Button>
               <Binoculars /> Continue exploring
             </Button>
           </Link>
-          <Link to={"/profile"}>
+          <Link
+            to={"/profile"}
+            className={
+              "transition ease-in-out duration-300 hover:-translate-y-1 hover:translate-x-1 hover:scale-105"
+            }
+          >
             <Button>
               <User /> Go to profile
             </Button>
