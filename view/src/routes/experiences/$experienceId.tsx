@@ -26,6 +26,7 @@ import {
 import { FaFacebook, FaThreads, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import SubscribeButton from "@/components/SubscribeButton.tsx";
 import type { eventSelectType } from "../../../../server/types.ts";
+import { createStripeSessionMutation } from "@/lib/mutations.tsx";
 
 export const Route = createFileRoute("/experiences/$experienceId")({
   loader: ({ params: { experienceId } }) => {
@@ -43,10 +44,13 @@ function RouteComponent() {
   );
   const queryClient = useQueryClient();
   const { pathname } = useLocation();
+  const stripeMutation = createStripeSessionMutation();
   console.log(pathname);
   if (isLoading)
     return (
-      <section className={"flex justify-center items-center flex-col gap-2 mt-30"}>
+      <section
+        className={"flex justify-center items-center flex-col gap-2 mt-30"}
+      >
         <div className={"max-w-2xl px-2"}>
           <Skeleton className={"w-80 h-80 sm:w-140 sm:h-100"} />
         </div>
@@ -67,7 +71,9 @@ function RouteComponent() {
   if (isError) return <p>Error: {error.message}</p>;
   const event = data?.event as eventSelectType;
   return (
-    <section className={"flex justify-center items-center flex-col gap-2 mt-30"}>
+    <section
+      className={"flex justify-center items-center flex-col gap-2 mt-30"}
+    >
       <div className={"max-w-2xl px-2"}>
         <img
           src={event?.eventImg!}
@@ -148,7 +154,6 @@ function RouteComponent() {
         </TooltipProvider>
       </section>
       <div className={"flex gap-4"}>
-
         <FacebookShareButton
           url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
           htmlTitle={"Share on Facebook"}
@@ -211,6 +216,11 @@ function RouteComponent() {
             className={"w-full"}
             onClick={() => {
               if (!authData?.user) navigate({ to: "/login" });
+              stripeMutation.mutate({
+                eventName: event.eventName,
+                eventPrice: event.eventPrice,
+                eventImg: event.eventImg,
+              });
             }}
           >
             Purchase

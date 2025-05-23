@@ -18,6 +18,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { paginationRangeAlgorithm } from "@/lib/utils.ts";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { ArrowRight, Search } from "lucide-react";
+import { Button } from "@/components/ui/button.tsx";
 
 const pageSearchSchema = z.object({
   page: fallback(z.number(), 1).default(1),
@@ -52,10 +56,33 @@ function RouteComponent() {
   const paginationRange = paginationRangeAlgorithm(page, numOfPages!);
 
   return (
-    <>
+    <section className={"mt-30"}>
+      <div className={" max-w-xl mx-auto mb-10"}>
+        <Label htmlFor={"search"} className={"sr-only"}>
+          Search
+        </Label>
+        <div className={"relative"}>
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <Search />
+          </div>
+          <Input
+            id={"search"}
+            type={"search"}
+            className={"w-full px-10 rounded-full"}
+            placeholder={"Search experiences"}
+          />
+          <Button
+            size={"icon"}
+            variant={"ghost"}
+            className={"rounded-full absolute top-0 right-0"}
+          >
+            <ArrowRight />
+          </Button>
+        </div>
+      </div>
       <div
         className={
-          "grid grid-cols-1 md:grid-cols-3 gap-y-8 mb-10 justify-items-center mt-30"
+          "grid grid-cols-1 md:grid-cols-3 gap-y-8 mb-10 justify-items-center "
         }
       >
         {isLoading
@@ -113,6 +140,6 @@ function RouteComponent() {
           </PaginationContent>
         </Pagination>
       )}
-    </>
+    </section>
   );
 }

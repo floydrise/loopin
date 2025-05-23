@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon, Pen, Pointer } from "lucide-react";
+import { CalendarIcon, PenTool, Pointer } from "lucide-react";
 import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator.tsx";
 import { type AnyFieldApi, useForm } from "@tanstack/react-form";
@@ -93,12 +93,22 @@ function RouteComponent() {
         }}
       >
         <Card className="max-w-4xl transition duration-1000 shadow-lg hover:shadow-violet-400 hover:dark:shadow-violet-900 m-auto">
-          <CardHeader>
-            <CardTitle className={"flex items-center gap-2"}>
-              <Pen /> Create a new experience
+          <CardHeader className={"flex flex-col items-center justify-center"}>
+            <CardTitle
+              className={
+                "flex items-center gap-2 text-xl md:text-3xl lg:text-4xl font-bold"
+              }
+            >
+              <PenTool className={"size-7 md:size-10"} /> Create a new
+              experience
             </CardTitle>
-            <CardDescription className={"flex items-center gap-2"}>
-              Fill the form below <Pointer size={18} className={"rotate-180"} />
+            <CardDescription
+              className={
+                "flex items-center gap-2 text-lg md:text-xl lg:text-2xl font-light"
+              }
+            >
+              Fill the form below{" "}
+              <Pointer className={"rotate-180 size-5 md:size-6"} />
             </CardDescription>
           </CardHeader>
           <Separator />

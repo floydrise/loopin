@@ -47,7 +47,7 @@ function App() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: [20, -5, 0] }}
-            transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+            transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
             className="text-2xl md:text-4xl lg:text-5xl font-bold max-w-4xl leading-relaxed lg:leading-snug"
           >
             Discover Events That Inspire{" "}
@@ -103,7 +103,7 @@ function App() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: [20, -5, 0] }}
-            transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+            transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
             className={
               "text-2xl md:text-3xl lg:text-4xl font-semibold inline-flex items-center"
             }
@@ -118,7 +118,7 @@ function App() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: [20, -5, 0] }}
-            transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+            transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
           >
             <Link to={"/experiences"}>
               <Button size={"sm"}>
@@ -163,7 +163,7 @@ function App() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: [20, -5, 0] }}
-            transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+            transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
             viewport={{ once: true, amount: 0.6 }}
             className={"text-2xl md:text-3xl lg:text-4xl flex items-center"}
           >
@@ -175,7 +175,7 @@ function App() {
               <motion.li
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: [20, -5, 0] }}
-                transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+                transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
                 viewport={{ once: true, amount: 0.6 }}
                 className={"flex gap-2 items-center"}
               >
@@ -185,7 +185,7 @@ function App() {
               <motion.li
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: [20, -5, 0] }}
-                transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+                transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
                 viewport={{ once: true, amount: 0.6 }}
                 className={"flex gap-2 items-center"}
               >
@@ -195,7 +195,7 @@ function App() {
               <motion.li
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: [20, -5, 0] }}
-                transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+                transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
                 viewport={{ once: true, amount: 0.6 }}
                 className={"flex gap-2 items-center"}
               >
@@ -208,7 +208,7 @@ function App() {
         <motion.img
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: [20, -5, 0] }}
-          transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+          transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
           viewport={{ once: true, amount: 0.6 }}
           src={dancingImg}
           alt={"People dancing"}
@@ -228,7 +228,7 @@ function App() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: [20, -5, 0] }}
-          transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+          transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
           viewport={{ once: true, amount: 0.6 }}
           className={"text-2xl lg:text-4xl flex items-center gap-2"}
         >
@@ -243,7 +243,7 @@ function App() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: [20, -5, 0] }}
-            transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
+            transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
             viewport={{ once: true, amount: 0.6 }}
           >
             <Testimonials />
