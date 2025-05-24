@@ -4,24 +4,43 @@ import { db } from "../db";
 import { eventsTable, eventUserPostSchema, eventUserTable } from "../db/schema";
 import { and, desc, eq, getTableColumns } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
+import { coerce, object, string } from "zod";
 
 const app = new Hono()
-  .get("/", authMiddleware, async (c) => {
-    const user = c.get("user");
-    if (!user) return c.json({ msg: "Not authorised!" }, 401);
-    const { createdAt, ...rest } = getTableColumns(eventsTable);
-    const { subscriptionCreatedAt } = getTableColumns(eventUserTable);
-    const subscriptions = await db
-      .select({ ...rest, subscriptionCreatedAt })
-      .from(eventsTable)
-      .innerJoin(
-        eventUserTable,
-        eq(eventsTable.eventId, eventUserTable.eventId),
-      )
-      .where(eq(eventUserTable.userId, user.id))
-      .orderBy(desc(eventUserTable.subscriptionCreatedAt));
-    return c.json(subscriptions);
-  })
+  .get(
+    "/",
+    zValidator(
+      "query",
+      object({
+        page: coerce.number().min(1),
+      }),
+    ),
+    authMiddleware,
+    async (c) => {
+      const user = c.get("user");
+      const { page } = c.req.valid("query");
+      if (!user) return c.json({ msg: "Not authorised!" }, 401);
+      const { createdAt, ...rest } = getTableColumns(eventsTable);
+      const { subscriptionCreatedAt } = getTableColumns(eventUserTable);
+      const limit = 4;
+      const offset = (page - 1) * limit;
+
+      const subscriptions = await db
+        .select({ ...rest, subscriptionCreatedAt })
+        .from(eventsTable)
+        .innerJoin(
+          eventUserTable,
+          eq(eventsTable.eventId, eventUserTable.eventId),
+        )
+        .where(eq(eventUserTable.userId, user.id))
+        .orderBy(desc(eventUserTable.subscriptionCreatedAt))
+        .limit(limit + 1)
+        .offset(offset);
+      const paginatedSubscriptions = subscriptions.slice(0, limit);
+      const hasNext = subscriptions.length > limit;
+      return c.json({ subscriptions: paginatedSubscriptions, hasNext });
+    },
+  )
   .post(
     "/",
     zValidator("json", eventUserPostSchema),
