@@ -9,7 +9,7 @@ import SubscriptionTicket from "@/components/SubscriptionTicket.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { beforeLoadAuth } from "@/lib/utils.ts";
 import { Button } from "@/components/ui/button.tsx";
-import { Loader } from "lucide-react";
+import { Frown, Loader, Rocket } from "lucide-react";
 import { Fragment } from "react";
 
 export const Route = createFileRoute("/profile")({
@@ -111,19 +111,25 @@ function RouteComponent() {
         </section>
       </div>
       <div className={"flex justify-center"}>
-        <Button
-          disabled={!hasNextPage || isFetching}
-          onClick={() => fetchNextPage()}
-          className={`w-1/5 duration-300 transition ease-in-out hover:-translate-y-1 hover:scale-105 mb-8`}
-        >
-          {isFetchingNextPage ? (
-            <Loader className={"animate-spin"} />
-          ) : hasNextPage ? (
-            "Load More"
-          ) : (
-            "Nothing to load"
-          )}
-        </Button>
+        {hasNextPage && (
+          <Button
+            disabled={!hasNextPage || isFetching}
+            onClick={() => fetchNextPage()}
+            className={`duration-300 transition ease-in-out hover:-translate-y-1 hover:scale-105 mb-8`}
+          >
+            {isFetchingNextPage ? (
+              <Loader className={"animate-spin"} />
+            ) : hasNextPage ? (
+              <span className={"flex items-center gap-2"}>
+                <Rocket /> Load More
+              </span>
+            ) : (
+              <span className={"flex items-center gap-2"}>
+                <Frown /> Nothing more to load
+              </span>
+            )}
+          </Button>
+        )}
       </div>
     </>
   );
