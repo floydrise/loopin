@@ -2,7 +2,7 @@ import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useSession } from "@/lib/auth_client.ts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge.tsx";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getSubscriptionsQueryOptions } from "@/lib/api.ts";
 import { toast } from "sonner";
 import SubscriptionTicket from "@/components/SubscriptionTicket.tsx";
@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { beforeLoadAuth } from "@/lib/utils.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Loader } from "lucide-react";
+import { Fragment } from "react";
 
 export const Route = createFileRoute("/profile")({
   beforeLoad: async ({ location }) => {
@@ -31,11 +32,15 @@ function RouteComponent() {
 
   const user = data?.user;
   const {
+    data: queryData,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
     isLoading,
     isError,
-    error,
-    data: queryData,
-  } = useQuery(getSubscriptionsQueryOptions);
+  } = useInfiniteQuery(getSubscriptionsQueryOptions);
   if (isError) {
     toast.error("An error occurred: " + error);
   }
@@ -80,37 +85,45 @@ function RouteComponent() {
         </div>
         <h1 className={"text-2xl font-bold ml-4"}>My orders:</h1>
         <section className={"grid grid-cols-1 md:grid-cols-2 gap-4 my-6"}>
-          {isLoading ? (
-            new Array(4)
-              .fill(null)
-              .map((_, index) => (
-                <Skeleton key={index} className={"max-w-md h-44 mx-2"} />
-              ))
-          ) : queryData?.length == 0 ? (
-            <p className={"ml-6 text-muted-foreground font-light"}>
-              No orders yet, why don't you{" "}
-              <Link to={"/experiences"} className={"underline"}>
-                add
-              </Link>{" "}
-              one?
-            </p>
-          ) : (
-            queryData?.map((event) => (
-              <SubscriptionTicket event={event} key={event.eventId} />
-            ))
-          )}
+          {isLoading
+            ? new Array(4)
+                .fill(null)
+                .map((_, index) => (
+                  <Skeleton key={index} className={"max-w-md h-44 mx-2"} />
+                ))
+            : queryData?.pages.map((group, index) => (
+                <Fragment key={index}>
+                  {group.subscriptions.length === 0 ? (
+                    <p className={"ml-6 text-muted-foreground font-light"}>
+                      No orders yet, why don't you{" "}
+                      <Link to={"/experiences"} className={"underline"}>
+                        add
+                      </Link>{" "}
+                      one?
+                    </p>
+                  ) : (
+                    group.subscriptions.map((event) => (
+                      <SubscriptionTicket event={event} key={event.eventId} />
+                    ))
+                  )}
+                </Fragment>
+              ))}
         </section>
       </div>
       <div className={"flex justify-center"}>
-        {queryData && queryData?.length > 4 && (
-          <Button
-            className={
-              "w-1/5 duration-300 transition ease-in-out hover:-translate-y-1 hover:scale-105 mb-8"
-            }
-          >
-            <Loader /> Load more
-          </Button>
-        )}
+        <Button
+          disabled={!hasNextPage || isFetching}
+          onClick={() => fetchNextPage()}
+          className={`w-1/5 duration-300 transition ease-in-out hover:-translate-y-1 hover:scale-105 mb-8`}
+        >
+          {isFetchingNextPage ? (
+            <Loader className={"animate-spin"} />
+          ) : hasNextPage ? (
+            "Load More"
+          ) : (
+            "Nothing to load"
+          )}
+        </Button>
       </div>
     </>
   );

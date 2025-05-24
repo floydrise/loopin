@@ -1,4 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import type { AppType } from "../../../server";
 import { hc } from "hono/client";
 import type {
@@ -19,7 +19,7 @@ const fetchAllEvents = async (page: number, search: string | undefined) => {
   const res = await api.experiences.$get({
     query: {
       page: String(page),
-      search: search
+      search: search,
     },
   });
   if (!res.ok) throw new Error("error while fetching the events");
@@ -81,8 +81,12 @@ export const postSubscription = async (eventId: number, userId: string) => {
   }
   return await res.json();
 };
-export const fetchSubscriptions = async () => {
-  const res = await api.subscriptions.$get();
+export const fetchSubscriptions = async (page: number) => {
+  const res = await api.subscriptions.$get({
+    query: {
+      page: String(page),
+    },
+  });
   if (!res.ok)
     throw new Error("An error occurred while fetching subscriptions");
   return await res.json();
@@ -164,7 +168,10 @@ export const createStripeSession = async (event: StripeInsertType) => {
 };
 
 // QueryOptions
-export const getEventsQueryOptions = (page: number, search: string | undefined) =>
+export const getEventsQueryOptions = (
+  page: number,
+  search: string | undefined,
+) =>
   queryOptions({
     queryKey: ["fetch_events", page, search],
     queryFn: () => fetchAllEvents(page, search),
@@ -176,10 +183,14 @@ export const getEventByIdQueryOptions = (eventId: string) => {
     queryFn: () => fetchEventById(eventId),
   });
 };
-export const getSubscriptionsQueryOptions = queryOptions({
+export const getSubscriptionsQueryOptions = infiniteQueryOptions({
   queryKey: ["fetch_subscriptions"],
-  queryFn: fetchSubscriptions,
-  staleTime: 5 * 1000,
+  queryFn: ({ pageParam = 1 }) => fetchSubscriptions(pageParam),
+  initialPageParam: 1,
+  getNextPageParam: (lastPage, _, lastPageParam) => {
+    if (lastPage.hasNext) return lastPageParam + 1;
+    return undefined;
+  },
 });
 export const fetchAccessTokenQueryOptions = queryOptions({
   queryKey: ["fetch_access_toke"],

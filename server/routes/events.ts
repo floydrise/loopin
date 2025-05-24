@@ -31,7 +31,6 @@ const app = new Hono()
               ilike(eventsTable.eventName, `%${trimmedSearch}%`),
             )
           : undefined;
-
       const limit = 6;
       const offset = (page - 1) * limit;
       const events = await db
