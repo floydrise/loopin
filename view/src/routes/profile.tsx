@@ -105,7 +105,7 @@ function RouteComponent() {
         {queryData && queryData?.length > 4 && (
           <Button
             className={
-              "w-1/5 duration-300 transition ease-in-out hover:-translate-y-1 hover:scale-105 "
+              "w-1/5 duration-300 transition ease-in-out hover:-translate-y-1 hover:scale-105 mb-8"
             }
           >
             <Loader /> Load more

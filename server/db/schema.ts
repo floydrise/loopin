@@ -53,6 +53,7 @@ export const eventUserTable = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
+    subscriptionCreatedAt: timestamp("subscription_created_at", {withTimezone: true}).defaultNow().notNull()
   },
   (t) => [unique("event_user_unique").on(t.eventId, t.userId)],
 );

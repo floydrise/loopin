@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { authMiddleware } from "../auth-middleware";
 import { db } from "../db";
 import { eventsTable, eventUserPostSchema, eventUserTable } from "../db/schema";
-import { and, eq, getTableColumns } from "drizzle-orm";
+import { and, desc, eq, getTableColumns } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 
 const app = new Hono()
@@ -10,14 +10,16 @@ const app = new Hono()
     const user = c.get("user");
     if (!user) return c.json({ msg: "Not authorised!" }, 401);
     const { createdAt, ...rest } = getTableColumns(eventsTable);
+    const { subscriptionCreatedAt } = getTableColumns(eventUserTable);
     const subscriptions = await db
-      .select({ ...rest })
+      .select({ ...rest, subscriptionCreatedAt })
       .from(eventsTable)
       .innerJoin(
         eventUserTable,
         eq(eventsTable.eventId, eventUserTable.eventId),
       )
-      .where(eq(eventUserTable.userId, user.id));
+      .where(eq(eventUserTable.userId, user.id))
+      .orderBy(desc(eventUserTable.subscriptionCreatedAt));
     return c.json(subscriptions);
   })
   .post(
