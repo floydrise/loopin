@@ -15,6 +15,7 @@ import { Route as ProfileImport } from './routes/profile'
 import { Route as PaymentSuccessImport } from './routes/paymentSuccess'
 import { Route as PaymentCancelImport } from './routes/paymentCancel'
 import { Route as LoginImport } from './routes/login'
+import { Route as GoodbyeImport } from './routes/goodbye'
 import { Route as CreateImport } from './routes/create'
 import { Route as IndexImport } from './routes/index'
 import { Route as ExperiencesIndexImport } from './routes/experiences.index'
@@ -43,6 +44,12 @@ const PaymentCancelRoute = PaymentCancelImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GoodbyeRoute = GoodbyeImport.update({
+  id: '/goodbye',
+  path: '/goodbye',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -86,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/create'
       fullPath: '/create'
       preLoaderRoute: typeof CreateImport
+      parentRoute: typeof rootRoute
+    }
+    '/goodbye': {
+      id: '/goodbye'
+      path: '/goodbye'
+      fullPath: '/goodbye'
+      preLoaderRoute: typeof GoodbyeImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -138,6 +152,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/goodbye': typeof GoodbyeRoute
   '/login': typeof LoginRoute
   '/paymentCancel': typeof PaymentCancelRoute
   '/paymentSuccess': typeof PaymentSuccessRoute
@@ -149,6 +164,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/goodbye': typeof GoodbyeRoute
   '/login': typeof LoginRoute
   '/paymentCancel': typeof PaymentCancelRoute
   '/paymentSuccess': typeof PaymentSuccessRoute
@@ -161,6 +177,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/goodbye': typeof GoodbyeRoute
   '/login': typeof LoginRoute
   '/paymentCancel': typeof PaymentCancelRoute
   '/paymentSuccess': typeof PaymentSuccessRoute
@@ -174,6 +191,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/create'
+    | '/goodbye'
     | '/login'
     | '/paymentCancel'
     | '/paymentSuccess'
@@ -184,6 +202,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/create'
+    | '/goodbye'
     | '/login'
     | '/paymentCancel'
     | '/paymentSuccess'
@@ -194,6 +213,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/create'
+    | '/goodbye'
     | '/login'
     | '/paymentCancel'
     | '/paymentSuccess'
@@ -206,6 +226,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
+  GoodbyeRoute: typeof GoodbyeRoute
   LoginRoute: typeof LoginRoute
   PaymentCancelRoute: typeof PaymentCancelRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
@@ -217,6 +238,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
+  GoodbyeRoute: GoodbyeRoute,
   LoginRoute: LoginRoute,
   PaymentCancelRoute: PaymentCancelRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
@@ -237,6 +259,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/create",
+        "/goodbye",
         "/login",
         "/paymentCancel",
         "/paymentSuccess",
@@ -250,6 +273,9 @@ export const routeTree = rootRoute
     },
     "/create": {
       "filePath": "create.tsx"
+    },
+    "/goodbye": {
+      "filePath": "goodbye.tsx"
     },
     "/login": {
       "filePath": "login.tsx"

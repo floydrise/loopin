@@ -16,6 +16,17 @@ import { Bot, Handshake, Heart } from "lucide-react";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content: "Log-in with social account"
+      },
+      {
+        title: "Login • LoopIn"
+      }
+    ]
+  }),
 });
 
 function RouteComponent() {
@@ -43,7 +54,7 @@ function RouteComponent() {
               setIsLoading(true);
               await signIn.social({
                 provider: "github",
-                callbackURL: "http://localhost:5173/",
+                callbackURL: "/",
               });
             }}
           >
@@ -56,7 +67,7 @@ function RouteComponent() {
               setIsLoading(true);
               await signIn.social({
                 provider: "google",
-                callbackURL: "http://localhost:5173/",
+                callbackURL: "/",
               });
             }}
           >

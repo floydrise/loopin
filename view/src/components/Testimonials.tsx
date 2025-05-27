@@ -1,7 +1,7 @@
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
-import guy1 from "/guy1.jpg"
-import guy2 from "/guy2.jpg"
-import guy3 from "/guy3.jpg"
+import guy1 from "/guy1.webp"
+import guy2 from "/guy2.webp"
+import guy3 from "/guy3.webp"
 
 export default function Testimonials() {
   const testimonials = [

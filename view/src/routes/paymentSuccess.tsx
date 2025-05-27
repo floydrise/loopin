@@ -1,12 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import dollarImg from "/dollar.png";
+import dollarImg from "/dollar.webp";
 import { Button } from "@/components/ui/button.tsx";
 import { Binoculars, User } from "lucide-react";
 import { useWindowSize } from "usehooks-ts";
 import Confetti from "react-confetti";
+import { motion } from "motion/react";
 
 export const Route = createFileRoute("/paymentSuccess")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content: "Stripe payment success",
+      },
+      {
+        title: "Payment success • LoopIn",
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {
@@ -20,7 +32,13 @@ function RouteComponent() {
         recycle={false}
       />
       <section className={"h-screen w-screen flex justify-center items-center"}>
-        <div
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.4,
+            scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+          }}
           className={
             "border p-10 md:p-20 mx-6 rounded-lg flex flex-col justify-center items-center bg-slate-50 dark:bg-primary-foreground gap-4 "
           }
@@ -60,7 +78,7 @@ function RouteComponent() {
               </Button>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
     </>
   );

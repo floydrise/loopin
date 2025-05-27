@@ -1,5 +1,10 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useSession } from "@/lib/auth_client.ts";
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useNavigate,
+} from "@tanstack/react-router";
+import { deleteUser, useSession } from "@/lib/auth_client.ts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge.tsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -11,6 +16,17 @@ import { beforeLoadAuth } from "@/lib/utils.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Frown, Loader, Rocket } from "lucide-react";
 import { Fragment } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/profile")({
   beforeLoad: async ({ location }) => {
@@ -25,6 +41,17 @@ export const Route = createFileRoute("/profile")({
     }
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content: "User profile",
+      },
+      {
+        title: "Profile • LoopIn",
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {
@@ -44,6 +71,7 @@ function RouteComponent() {
   if (isError) {
     toast.error("An error occurred: " + error);
   }
+  const navigate = useNavigate();
 
   return (
     <>
@@ -57,11 +85,7 @@ function RouteComponent() {
           <div>
             <span className={"inline-flex gap-1"}>
               <h1>{user?.name}</h1>
-              <Badge
-                variant={user?.role == "staff" ? "destructive" : "default"}
-              >
-                {user?.role}
-              </Badge>{" "}
+              <Badge>{user?.role}</Badge>{" "}
             </span>
             <p
               className={"text-gray-600 dark:text-gray-400 font-light text-sm"}
@@ -82,6 +106,37 @@ function RouteComponent() {
                 .join("-")}
             </p>
           </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={"destructive"}>Delete</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription className={"text-red-500"}>
+                  This action <span className={"underline italic"}>cannot</span>{" "}
+                  be undone. This will permanently delete your account and
+                  remove your data from our servers.
+                </AlertDialogDescription>
+                <br />
+                <AlertDialogDescription className={"font-semibold"}>
+                  You'll be sent an email with a confirmation link. Please,
+                  click the link and your account will be deleted.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    deleteUser({});
+                    navigate({ to: "/goodbye" });
+                  }}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
         <h1 className={"text-2xl font-bold ml-4"}>My orders:</h1>
         <section className={"grid grid-cols-1 md:grid-cols-2 gap-4 my-6"}>

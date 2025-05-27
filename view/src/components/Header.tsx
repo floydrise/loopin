@@ -5,7 +5,7 @@ import { useSession } from "@/lib/auth_client.ts";
 import { Brush, House, LogIn, Telescope } from "lucide-react";
 import { ProfileDropdown } from "@/components/ProfileDropdown.tsx";
 import { MenuDropdown } from "@/components/MenuDropdown.tsx";
-import logo from "/loopin_purple.png?url";
+import logo from "/loopin_purple.webp?url";
 import { useMediaQuery } from "usehooks-ts";
 
 export default function Header() {

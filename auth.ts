@@ -32,5 +32,21 @@ export const auth = betterAuth({
         input: false,
       },
     },
+    deleteUser: {
+      enabled: true,
+      sendDeleteAccountVerification: async ({ user, url, token }) => {
+        await fetch(`${Bun.env.BETTER_AUTH_URL}/api/send_email/deleteUser`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            url: url,
+            user_email: user.email,
+            user_name: user.name,
+          }),
+        });
+      },
+    },
   },
 });
