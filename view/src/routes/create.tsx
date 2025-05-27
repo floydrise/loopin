@@ -46,6 +46,17 @@ export const Route = createFileRoute("/create")({
     }
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content: "Create experience"
+      },
+      {
+        title: "Create • LoopIn"
+      }
+    ]
+  }),
 });
 
 const expDefVal: eventInsertType = {

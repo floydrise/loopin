@@ -484,12 +484,15 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
           ) : (
             <Button
               onClick={() => {
-                if (!data?.session) navigate({ to: "/login" });
-                stripeMutation.mutate({
-                  eventName: event.eventName,
-                  eventPrice: event.eventPrice,
-                  eventImg: event.eventImg,
-                });
+                if (!data?.session) {
+                  navigate({ to: "/login" });
+                } else {
+                  stripeMutation.mutate({
+                    eventName: event.eventName,
+                    eventPrice: event.eventPrice,
+                    eventImg: event.eventImg,
+                  });
+                }
               }}
               variant={"outline"}
               className={

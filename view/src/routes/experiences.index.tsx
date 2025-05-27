@@ -32,6 +32,17 @@ const pageSearchSchema = z.object({
 export const Route = createFileRoute("/experiences/")({
   validateSearch: zodValidator(pageSearchSchema),
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content: "Experiences page, find local events",
+      },
+      {
+        title: "Experiences • LoopIn",
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

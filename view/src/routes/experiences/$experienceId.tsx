@@ -33,6 +33,17 @@ export const Route = createFileRoute("/experiences/$experienceId")({
     if (isNaN(Number(experienceId))) throw notFound();
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content: "More info about the experience",
+      },
+      {
+        title: "Event description • LoopIn",
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {
@@ -155,7 +166,7 @@ function RouteComponent() {
       </section>
       <div className={"flex gap-4"}>
         <FacebookShareButton
-          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          url={import.meta.env.VITE_BASE_URL! + pathname}
           htmlTitle={"Share on Facebook"}
           hashtag={"#attending"}
           className={"hover:animate-pulse"}
@@ -164,7 +175,7 @@ function RouteComponent() {
         </FacebookShareButton>
 
         <TwitterShareButton
-          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          url={import.meta.env.VITE_BASE_URL! + pathname}
           htmlTitle={"Share on X(Twitter)"}
           hashtags={["#attending", "#feelinggreat", "#happy", "#event"]}
           title={event?.eventName}
@@ -173,7 +184,7 @@ function RouteComponent() {
           <FaXTwitter className={"size-5 stroke-gray-500"} />
         </TwitterShareButton>
         <ThreadsShareButton
-          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          url={import.meta.env.VITE_BASE_URL! + pathname}
           title={event?.eventName}
           className={"hover:animate-pulse"}
           htmlTitle={"Share on Threads"}
@@ -181,7 +192,7 @@ function RouteComponent() {
           <FaThreads className={"size-5"} />
         </ThreadsShareButton>
         <WhatsappShareButton
-          url={"https://www.youtube.com/watch?v=NAxwmaCDYcI"}
+          url={import.meta.env.VITE_BASE_URL! + pathname}
           htmlTitle={"Share on WhatsApp"}
           title={event?.eventName}
           className={"hover:animate-pulse"}
@@ -215,12 +226,15 @@ function RouteComponent() {
           <Button
             className={"w-full"}
             onClick={() => {
-              if (!authData?.user) navigate({ to: "/login" });
-              stripeMutation.mutate({
-                eventName: event.eventName,
-                eventPrice: event.eventPrice,
-                eventImg: event.eventImg,
-              });
+              if (!authData?.user) {
+                navigate({ to: "/login" });
+              } else {
+                stripeMutation.mutate({
+                  eventName: event.eventName,
+                  eventPrice: event.eventPrice,
+                  eventImg: event.eventImg,
+                });
+              }
             }}
           >
             Purchase

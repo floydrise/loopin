@@ -1,12 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Highlight } from "@/components/ui/hero-highlight.tsx";
 import { motion } from "motion/react";
-import heroImg from "/heroBg.jpg";
-import targetImg from "/target.png";
-import pinImg from "/pin.png";
-import dancingImg from "/dancing.jpg";
-import checkImg from "/check.png";
-import talkingImg from "/talking.png";
+import heroImg from "/heroBg.webp";
+import targetImg from "/target.webp";
+import pinImg from "/pin.webp";
+import dancingImg from "/dancing.webp";
+import checkImg from "/check.webp";
+import talkingImg from "/talking.webp";
 import { Button } from "@/components/ui/button.tsx";
 import { Flame } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -21,6 +21,17 @@ const Testimonials = lazy(() => import("../components/Testimonials.tsx"));
 
 export const Route = createFileRoute("/")({
   component: App,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content: "Home page of LoopIn",
+      },
+      {
+        title: "Home • LoopIn",
+      },
+    ],
+  }),
 });
 
 function App() {

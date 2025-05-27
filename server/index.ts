@@ -6,8 +6,10 @@ import stripeSession from "./routes/create-checkout-session";
 import { auth } from "../auth";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { serveStatic } from "hono/bun";
 
-const app = new Hono()
+const app = new Hono();
+const api = app
   .use("*", logger())
   .basePath("/api")
   .on(["POST", "GET"], "/auth/**", (c) => auth.handler(c.req.raw))
@@ -31,5 +33,8 @@ const app = new Hono()
   .route("/send_email", sendEmailRoute)
   .route("/create_checkout_session", stripeSession);
 
-export type AppType = typeof app;
+app.use("*", serveStatic({ root: "./view/dist" }));
+app.get("*", serveStatic({ path: "./view/dist/index.html" }));
+
+export type AppType = typeof api;
 export default app;

@@ -33,8 +33,8 @@ const app = new Hono().post(
         currency: "gbp",
         payment_method_types: ["card", "paypal", "amazon_pay"],
         customer_email: user?.email,
-        success_url: "http://localhost:5173/paymentSuccess",
-        cancel_url: "http://localhost:5173/paymentCancel",
+        success_url: Bun.env.BETTER_AUTH_URL + "/paymentSuccess",
+        cancel_url: Bun.env.BETTER_AUTH_URL + "/paymentCancel",
       });
       return c.json({ id: stripeSession.id });
     } catch (e) {
