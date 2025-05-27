@@ -191,6 +191,7 @@ export const getSubscriptionsQueryOptions = infiniteQueryOptions({
     if (lastPage.hasNext) return lastPageParam + 1;
     return undefined;
   },
+  staleTime: 5 * 1000 * 60,
 });
 export const fetchAccessTokenQueryOptions = queryOptions({
   queryKey: ["fetch_access_toke"],
