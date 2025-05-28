@@ -29,6 +29,8 @@ export function ProfileDropdown({
     role: string;
   };
 }) {
+  const userNameArr = user.name.split(" ");
+  const username = userNameArr[0][0] + userNameArr[1][0];
   const navigate = useNavigate();
 
   return (
@@ -38,7 +40,7 @@ export function ProfileDropdown({
       >
         <Avatar>
           <AvatarImage src={user.image ?? ""} alt="profile pic" />
-          <AvatarFallback>{user.name}</AvatarFallback>
+          <AvatarFallback>{username}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"md:mt-2 mb-2"}>

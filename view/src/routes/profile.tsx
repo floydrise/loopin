@@ -72,7 +72,6 @@ function RouteComponent() {
     toast.error("An error occurred: " + error);
   }
   const navigate = useNavigate();
-
   return (
     <>
       <div className={"md:mx-30 mt-30"}>
@@ -80,7 +79,7 @@ function RouteComponent() {
         <div className={"flex ml-8 items-center gap-1 my-6"}>
           <Avatar className={"size-14 border border-black"}>
             <AvatarImage src={user?.image ?? ""} alt="User avatar image" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>UN</AvatarFallback>
           </Avatar>
           <div>
             <span className={"inline-flex gap-1"}>
