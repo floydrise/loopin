@@ -5,9 +5,12 @@ import { eventUserTable, stripeInsertSchema } from "../db/schema";
 import { authMiddleware } from "../auth-middleware";
 import { db } from "../db";
 import { and, eq } from "drizzle-orm";
+import { auth } from "../../auth";
+import { Resend } from "resend";
+import EmailTemplate from "../emails/email-template";
 
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY!);
-
+const resend = new Resend(process.env.RESEND_API_KEY);
 const app = new Hono()
   .post(
     "/",
@@ -61,6 +64,8 @@ const app = new Hono()
       switch (event.type) {
         case "checkout.session.completed":
           const session = event.data.object as Stripe.Checkout.Session;
+          const email = session.customer_email;
+          const name = session.customer_details?.name;
           const metadata = session.metadata;
           const userId = metadata?.userId;
           const eventId = metadata?.eventId;
@@ -88,6 +93,17 @@ const app = new Hono()
             .values({ userId, eventId: Number(eventId) })
             .returning()
             .then((res) => res[0]);
+
+          const { data, error } = await resend.emails.send({
+            from: "LoopIn <notifications@stefancodes.dev>",
+            to: [email!],
+            subject: "LoopIn experience 🌊",
+            react: <EmailTemplate userName={name ?? email!} />,
+          });
+
+          if (error) {
+            console.log(error);
+          }
           return c.json({
             msg: "Successfully inserted subscription",
             subscription: res,

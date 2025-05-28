@@ -11,12 +11,11 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const app = new Hono()
   .get("/", authMiddleware, async (c) => {
     const user = c.get("user");
-    if (!user) return c.json({ msg: "Not authenticated" }, 400);
     const { data, error } = await resend.emails.send({
       from: "LoopIn <notifications@stefancodes.dev>",
-      to: [user.email],
+      to: [user!.email],
       subject: "LoopIn experience 🌊",
-      react: <EmailTemplate userName={user.name} />,
+      react: <EmailTemplate userName={user!.name} />,
     });
 
     if (error) {
