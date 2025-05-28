@@ -224,7 +224,9 @@ function RouteComponent() {
       ) : (
         <div className={"my-6 w-72"}>
           <Button
-            className={"w-full"}
+            className={
+              "w-full transform duration-300 hover:-translate-y-1 hover:scale-105"
+            }
             onClick={() => {
               if (!authData?.user) {
                 navigate({ to: "/login" });
@@ -233,7 +235,7 @@ function RouteComponent() {
                   eventName: event.eventName,
                   eventPrice: event.eventPrice,
                   eventImg: event.eventImg,
-                  eventId: event.eventId
+                  eventId: event.eventId,
                 });
               }
             }}
