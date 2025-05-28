@@ -491,6 +491,7 @@ const ExperienceCard = ({ event }: { event: eventSelectType }) => {
                     eventName: event.eventName,
                     eventPrice: event.eventPrice,
                     eventImg: event.eventImg,
+                    eventId: event.eventId
                   });
                 }
               }}

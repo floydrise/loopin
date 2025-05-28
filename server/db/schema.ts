@@ -158,4 +158,5 @@ export const stripeInsertSchema = eventsPostSchema.pick({
   eventName: true,
   eventPrice: true,
   eventImg: true,
+  eventId: true,
 });
