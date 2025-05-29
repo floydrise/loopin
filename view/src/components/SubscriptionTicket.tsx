@@ -19,7 +19,7 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
         "group flex max-w-md gap-2 border-1 bg-primary-foreground dark:bg-primary-foreground p-3 mx-2 rounded-lg transition-shadow duration-1000 shadow-lg hover:shadow-violet-400 hover:dark:shadow-violet-900"
       }
     >
-      <div className={"group w-56 bg-cover overflow-hidden rounded-sm"}>
+      <div className={"group my-auto h-34 w-56 bg-cover overflow-hidden rounded-sm"}>
         <img
           src={event.eventImg!}
           alt={"Image of the event"}
@@ -28,7 +28,7 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
           }
         />
       </div>
-      <div>
+      <div className={"flex flex-col justify-evenly items-start"}>
         <div className={"flex justify-center items-center gap-2"}>
           <h2
             className={"font-semibold text-base"}
