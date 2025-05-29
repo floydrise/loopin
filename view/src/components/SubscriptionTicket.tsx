@@ -19,7 +19,11 @@ const SubscriptionTicket = ({ event }: { event: SubscriptionTicketType }) => {
         "group flex max-w-md gap-2 border-1 bg-primary-foreground dark:bg-primary-foreground p-3 mx-2 rounded-lg transition-shadow duration-1000 shadow-lg hover:shadow-violet-400 hover:dark:shadow-violet-900"
       }
     >
-      <div className={"group my-auto h-34 w-56 bg-cover overflow-hidden rounded-sm"}>
+      <div
+        className={
+          "group my-auto h-34 w-56 bg-cover overflow-hidden rounded-sm"
+        }
+      >
         <img
           src={event.eventImg!}
           alt={"Image of the event"}

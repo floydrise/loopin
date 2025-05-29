@@ -33,7 +33,6 @@ export default function Header() {
       animate={hidden ? "hidden" : "visible"}
       transition={{
         duration: 0.5,
-        delay: 0.2,
       }}
       className="p-2 bg-background/50 backdrop-blur-sm gap-2 rounded-full border fixed top-4 w-fit left-1/2 -translate-x-1/2 z-50"
     >
