@@ -52,14 +52,14 @@ function App() {
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
 
-        <div className="absolute inset-0 bg-background/40 z-10" />
+        <div className="absolute inset-0 bg-slate-700/40 z-10" />
 
         <div className="absolute inset-0 flex flex-col justify-center items-center z-20 text-center px-4">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: [20, -5, 0] }}
             transition={{ duration: 1, ease: [0.4, 0.0, 0.2, 1] }}
-            className="text-2xl md:text-4xl lg:text-5xl font-bold max-w-4xl leading-relaxed lg:leading-snug"
+            className="text-2xl md:text-4xl lg:text-5xl text-white font-bold max-w-4xl leading-relaxed lg:leading-snug"
           >
             Discover Events That Inspire{" "}
             <span className="hidden md:inline-flex">You</span>
@@ -110,7 +110,7 @@ function App() {
         </g>
       </svg>
       <section className={"container mt-2 md:mt-6 m-auto "}>
-        <div className={"flex items-center gap-2 md:mb-4 ml-4"}>
+        <div className={"w-fit z-10 flex items-center gap-2 md:mb-4 ml-4"}>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: [20, -5, 0] }}

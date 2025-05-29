@@ -2,10 +2,9 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useSession } from "@/lib/auth_client.ts";
-import { Brush, House, LogIn, Telescope } from "lucide-react";
+import { Brush, House, LogIn, MapPin, Telescope } from "lucide-react";
 import { ProfileDropdown } from "@/components/ProfileDropdown.tsx";
 import { MenuDropdown } from "@/components/MenuDropdown.tsx";
-import logo from "/loopin_purple.webp?url";
 import { useMediaQuery } from "usehooks-ts";
 
 export default function Header() {
@@ -13,10 +12,11 @@ export default function Header() {
   const { data } = useSession();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
-    <header className="p-4 backdrop-blur-lg gap-2 rounded-b-md fixed top-0 w-full z-50">
+    <header className="p-2 bg-background/50 backdrop-blur-sm gap-2 rounded-full border fixed top-4 w-fit left-1/2 -translate-x-1/2 z-50">
       <nav className="flex flex-row justify-between items-center gap-4">
-        <Link to={"/"}>
-          <img src={logo} alt={"App logo"} className={"w-32"} />
+        <Link to={"/"} className={"flex items-center gap-1"}>
+          <MapPin className={"size-8"} />
+          <h1 className={"font-cherry text-lg"}>LoopIn</h1>
         </Link>
         <div className={"flex gap-4 justify-center items-center"}>
           <div className={"md:flex gap-2 hidden items-center justify-center"}>
