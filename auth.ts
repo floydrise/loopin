@@ -22,7 +22,11 @@ export const auth = betterAuth({
       accessType: "offline",
     },
   },
-  trustedOrigins: ["http://localhost:5173", "http://localhost:3000"],
+  trustedOrigins: [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://loopin-ch74.onrender.com/",
+  ],
   user: {
     additionalFields: {
       role: {
