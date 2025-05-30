@@ -3,7 +3,7 @@ import { inferAdditionalFields } from "better-auth/client/plugins";
 import type { auth } from "../../../auth.ts";
 
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://loopin-ch74.onrender.com/",
   plugins: [inferAdditionalFields<typeof auth>()],
 });
 export const {

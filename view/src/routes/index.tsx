@@ -41,7 +41,6 @@ function App() {
   if (isError) {
     toast.error("An error occurred: " + error);
   }
-
   const events = data?.events;
   return (
     <>
