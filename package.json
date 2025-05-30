@@ -1,14 +1,17 @@
 {
   "name": "Loopin",
   "scripts": {
-    "dev": "bun run --hot server/index.ts"
+    "dev": "bun run --hot server/index.ts",
+    "start": "bun run server/index.ts"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.5.0",
+    "@neondatabase/serverless": "^1.0.0",
     "@react-email/components": "0.0.41",
     "@stripe/stripe-js": "^7.3.0",
     "better-auth": "^1.2.8",
-    "drizzle-orm": "^0.43.1",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.44.0",
     "drizzle-seed": "^0.3.1",
     "drizzle-zod": "^0.7.1",
     "hono": "^4.7.10",

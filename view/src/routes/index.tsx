@@ -148,10 +148,20 @@ function App() {
                   <Skeleton key={index} className={"w-100 h-100"} />
                 ))
             : events?.map((event) => (
-                <ExperienceCard
-                  key={event.eventId}
-                  event={event as eventSelectType}
-                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.6,
+                    scale: { type: "spring", visualDuration: 0.6, bounce: 0.1 },
+                  }}
+                  className={"h-full"}
+                >
+                  <ExperienceCard
+                    key={event.eventId}
+                    event={event as eventSelectType}
+                  />
+                </motion.div>
               ))}
         </div>
       </section>

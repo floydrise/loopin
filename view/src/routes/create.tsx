@@ -50,12 +50,12 @@ export const Route = createFileRoute("/create")({
     meta: [
       {
         name: "description",
-        content: "Create experience"
+        content: "Create experience",
       },
       {
-        title: "Create • LoopIn"
-      }
-    ]
+        title: "Create • LoopIn",
+      },
+    ],
   }),
 });
 
@@ -156,7 +156,7 @@ function RouteComponent() {
                   children={(field) => (
                     <>
                       <div className="flex flex-col space-y-1.5">
-                        <Label htmlFor={field.name}>Name:</Label>
+                        <Label htmlFor={field.name}>Description:</Label>
                         <Textarea
                           id={field.name}
                           name={field.name}
