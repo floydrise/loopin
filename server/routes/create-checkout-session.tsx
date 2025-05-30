@@ -5,9 +5,9 @@ import { eventUserTable, stripeInsertSchema } from "../db/schema";
 import { authMiddleware } from "../auth-middleware";
 import { db } from "../db";
 import { and, eq } from "drizzle-orm";
-import { auth } from "../../auth";
 import { Resend } from "resend";
 import EmailTemplate from "../emails/email-template";
+import { render } from "@react-email/components";
 
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY!);
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -93,12 +93,14 @@ const app = new Hono()
             .values({ userId, eventId: Number(eventId) })
             .returning()
             .then((res) => res[0]);
-
+          const html = await render(
+            <EmailTemplate userName={name ?? email!} />,
+          );
           const { data, error } = await resend.emails.send({
             from: "LoopIn <notifications@stefancodes.dev>",
             to: [email!],
             subject: "LoopIn experience 🌊",
-            react: <EmailTemplate userName={name ?? email!} />,
+            html,
           });
 
           if (error) {
