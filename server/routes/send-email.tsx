@@ -5,19 +5,17 @@ import { authMiddleware } from "../auth-middleware";
 import DeleteUserTemplate from "../emails/delete-user-template";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { render } from "@react-email/components";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = new Hono()
   .get("/", authMiddleware, async (c) => {
     const user = c.get("user");
-    const html = await render(<EmailTemplate userName={user!.name} />);
     const { data, error } = await resend.emails.send({
       from: "LoopIn <notifications@stefancodes.dev>",
       to: [user!.email],
       subject: "LoopIn experience 🌊",
-      html,
+      react: <EmailTemplate userName={user!.name} />,
     });
 
     if (error) {
@@ -38,14 +36,11 @@ const app = new Hono()
     ),
     async (c) => {
       const { url, user_email, user_name } = c.req.valid("json");
-      const html = await render(
-        <DeleteUserTemplate userName={user_name} url={url} />,
-      );
       const { data, error } = await resend.emails.send({
         from: "LoopIn <notifications@stefancodes.dev>",
         to: [user_email],
         subject: "Delete LoopIn profile",
-        html,
+        react: <DeleteUserTemplate userName={user_name} url={url} />,
       });
       if (error) {
         return c.json(error, 400);
