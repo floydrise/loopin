@@ -9,7 +9,7 @@ import {
   Img,
 } from "@react-email/components";
 
-export const EmailTemplate = ({ userName }: { userName: string }) => (
+const EmailTemplate = ({ userName }: { userName: string }) => (
   <Html>
     <Head />
     <Body style={main}>

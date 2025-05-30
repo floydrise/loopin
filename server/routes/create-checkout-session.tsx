@@ -93,14 +93,11 @@ const app = new Hono()
             .values({ userId, eventId: Number(eventId) })
             .returning()
             .then((res) => res[0]);
-          const html = await render(
-            <EmailTemplate userName={name ?? email!} />,
-          );
           const { data, error } = await resend.emails.send({
             from: "LoopIn <notifications@stefancodes.dev>",
             to: [email!],
             subject: "LoopIn experience 🌊",
-            html,
+            react: <EmailTemplate userName={name ?? email!} />,
           });
 
           if (error) {
