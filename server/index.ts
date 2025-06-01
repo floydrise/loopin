@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Hono } from "hono";
 import eventsRoute from "./routes/events";
 import subscriptionsRoute from "./routes/subscriptions";
@@ -16,7 +17,7 @@ const api = app
   .use(
     "/auth/*",
     cors({
-      origin: ["http://localhost:3000", "http://localhost:5173"],
+      origin: ["http://localhost:3000", "http://localhost:5173", "https://loopin-aiii.onrender.com/"],
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "OPTIONS"],
       exposeHeaders: ["Content-Length"],
