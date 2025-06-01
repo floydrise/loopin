@@ -287,9 +287,12 @@ function App() {
         </g>
       </svg>
       <section
-        className={"h-20 bg-violet-400 flex justify-center items-center"}
+        className={"h-20 bg-violet-400 flex justify-center items-center gap-2"}
       >
-        Copyright © Stefan Petrov 2025
+        <p>Copyright © Stefan Petrov 2025</p>
+        <Link to={"/privacy_policy"} className={"underline"}>
+          Privacy Policy
+        </Link>
       </section>
     </>
   );
