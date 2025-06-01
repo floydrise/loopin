@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
+import { Route as PrivacypolicyImport } from './routes/privacy_policy'
 import { Route as PaymentSuccessImport } from './routes/paymentSuccess'
 import { Route as PaymentCancelImport } from './routes/paymentCancel'
 import { Route as LoginImport } from './routes/login'
@@ -26,6 +27,12 @@ import { Route as ExperiencesExperienceIdImport } from './routes/experiences/$ex
 const ProfileRoute = ProfileImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PrivacypolicyRoute = PrivacypolicyImport.update({
+  id: '/privacy_policy',
+  path: '/privacy_policy',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -123,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaymentSuccessImport
       parentRoute: typeof rootRoute
     }
+    '/privacy_policy': {
+      id: '/privacy_policy'
+      path: '/privacy_policy'
+      fullPath: '/privacy_policy'
+      preLoaderRoute: typeof PrivacypolicyImport
+      parentRoute: typeof rootRoute
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -156,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/paymentCancel': typeof PaymentCancelRoute
   '/paymentSuccess': typeof PaymentSuccessRoute
+  '/privacy_policy': typeof PrivacypolicyRoute
   '/profile': typeof ProfileRoute
   '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
   '/experiences': typeof ExperiencesIndexRoute
@@ -168,6 +183,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/paymentCancel': typeof PaymentCancelRoute
   '/paymentSuccess': typeof PaymentSuccessRoute
+  '/privacy_policy': typeof PrivacypolicyRoute
   '/profile': typeof ProfileRoute
   '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
   '/experiences': typeof ExperiencesIndexRoute
@@ -181,6 +197,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/paymentCancel': typeof PaymentCancelRoute
   '/paymentSuccess': typeof PaymentSuccessRoute
+  '/privacy_policy': typeof PrivacypolicyRoute
   '/profile': typeof ProfileRoute
   '/experiences/$experienceId': typeof ExperiencesExperienceIdRoute
   '/experiences/': typeof ExperiencesIndexRoute
@@ -195,6 +212,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/paymentCancel'
     | '/paymentSuccess'
+    | '/privacy_policy'
     | '/profile'
     | '/experiences/$experienceId'
     | '/experiences'
@@ -206,6 +224,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/paymentCancel'
     | '/paymentSuccess'
+    | '/privacy_policy'
     | '/profile'
     | '/experiences/$experienceId'
     | '/experiences'
@@ -217,6 +236,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/paymentCancel'
     | '/paymentSuccess'
+    | '/privacy_policy'
     | '/profile'
     | '/experiences/$experienceId'
     | '/experiences/'
@@ -230,6 +250,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PaymentCancelRoute: typeof PaymentCancelRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
+  PrivacypolicyRoute: typeof PrivacypolicyRoute
   ProfileRoute: typeof ProfileRoute
   ExperiencesExperienceIdRoute: typeof ExperiencesExperienceIdRoute
   ExperiencesIndexRoute: typeof ExperiencesIndexRoute
@@ -242,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PaymentCancelRoute: PaymentCancelRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
+  PrivacypolicyRoute: PrivacypolicyRoute,
   ProfileRoute: ProfileRoute,
   ExperiencesExperienceIdRoute: ExperiencesExperienceIdRoute,
   ExperiencesIndexRoute: ExperiencesIndexRoute,
@@ -263,6 +285,7 @@ export const routeTree = rootRoute
         "/login",
         "/paymentCancel",
         "/paymentSuccess",
+        "/privacy_policy",
         "/profile",
         "/experiences/$experienceId",
         "/experiences/"
@@ -285,6 +308,9 @@ export const routeTree = rootRoute
     },
     "/paymentSuccess": {
       "filePath": "paymentSuccess.tsx"
+    },
+    "/privacy_policy": {
+      "filePath": "privacy_policy.tsx"
     },
     "/profile": {
       "filePath": "profile.tsx"
