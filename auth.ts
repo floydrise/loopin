@@ -25,7 +25,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://loopin-ch74.onrender.com/",
+    "https://loopin-aiii.onrender.com",
   ],
   user: {
     additionalFields: {

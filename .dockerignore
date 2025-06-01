@@ -1,0 +1,19 @@
+# Ignore dependencies
+node_modules
+view/node_modules
+
+# Ignore VCS and logs
+.git
+.gitignore
+*.log
+
+# Ignore Docker artifacts
+Dockerfile
+.dockerignore
+
+# Ignore env
+.env
+view/.env
+
+README.md
+stripe_test_cards.txt

@@ -7,7 +7,7 @@ import { db } from "../db";
 import { and, eq } from "drizzle-orm";
 import { Resend } from "resend";
 import EmailTemplate from "../emails/email-template";
-import { render } from "@react-email/components";
+import 'dotenv/config';
 
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY!);
 const resend = new Resend(process.env.RESEND_API_KEY);
