@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Highlight } from "@/components/ui/hero-highlight.tsx";
 import { motion } from "motion/react";
-import heroImg from "/heroBg.webp";
+import heroImg from "/public/heroBg.webp";
 import targetImg from "/target.webp";
 import pinImg from "/pin.webp";
 import dancingImg from "/dancing.webp";
@@ -48,6 +48,9 @@ function App() {
         <img
           src={heroImg}
           alt="Hero background image"
+          width={1500}
+          height={1000}
+          loading={"eager"}
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
 
